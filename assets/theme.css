@@ -1,0 +1,114 @@
+/* Fellowship Finder: shared design tokens and components.
+   Light theme in the Rotaract Club of Rubaga cranberry; dark theme is neutral charcoal with pink kept for brand marks. */
+:root{
+  --bg:#F8F4F6; --surface:#FFFFFF; --sunk:#F2E8EC; --fg:#24121A; --muted:#6E5A63; --line:#E8D9E0;
+  --accent:#D22163; --accent-fg:#FFFFFF; --accent-soft:#FBE1EB;
+  --btn:#D22163; --btn-fg:#FFFFFF; --link:#D22163; --rel:#D22163; --hot:#D22163; --me:#D22163;
+  --rotary:#2650B8; --rotaract:#D22163;
+  --warn:#8A5000; --warn-bg:#FFF0D6; --bad:#B42318; --bad-bg:#FDE7E4; --ok:#1F7A4A; --ok-bg:#E2F4E9;
+  --font-display:"Google Sans","Google Sans Flex","Segoe UI",system-ui,sans-serif;
+  --font-body:"Google Sans","Google Sans Flex",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"Google Sans Code",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121113; --surface:#1B1A1D; --sunk:#242327; --fg:#EFECEF; --muted:#A7A2A9; --line:#333137;
+    --accent:#E6789F; --accent-fg:#1A1719; --accent-soft:#2C2A2F;
+    --btn:#ECE7EA; --btn-fg:#1A181B; --link:#ECE7EA; --rel:#F4F1F3; --hot:#8F8A93; --me:#ECE7EA;
+    --rotary:#8FAAF5; --rotaract:#E6789F;
+    --warn:#F2B35C; --warn-bg:#33260E; --bad:#FF8F85; --bad-bg:#3A1714; --ok:#62D49C; --ok-bg:#12301F;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121113; --surface:#1B1A1D; --sunk:#242327; --fg:#EFECEF; --muted:#A7A2A9; --line:#333137;
+  --accent:#E6789F; --accent-fg:#1A1719; --accent-soft:#2C2A2F;
+  --btn:#ECE7EA; --btn-fg:#1A181B; --link:#ECE7EA; --rel:#F4F1F3; --hot:#8F8A93; --me:#ECE7EA;
+  --rotary:#8FAAF5; --rotaract:#E6789F;
+  --warn:#F2B35C; --warn-bg:#33260E; --bad:#FF8F85; --bad-bg:#3A1714; --ok:#62D49C; --ok-bg:#12301F;
+  color-scheme:dark;
+}
+:root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{
+  margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-body); font-size:15px; line-height:1.5;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:20px 40px;
+}
+img{max-width:100%}
+h1,h2,h3{font-family:var(--font-display); text-wrap:balance; margin:0}
+sup{font-size:.62em; line-height:0}
+button,select,input,textarea{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--link); outline-offset:2px}
+a{color:var(--link)}
+
+.wrap{max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:20px}
+.label{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600}
+
+/* Buttons */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:6px; min-height:38px; padding:0 14px; border-radius:8px;
+  border:1px solid var(--btn); background:var(--btn); color:var(--btn-fg); font-weight:600; font-size:.9rem;
+  text-decoration:none; cursor:pointer; white-space:nowrap;
+}
+.btn:hover{filter:brightness(1.08)}
+.btn:disabled{opacity:.55; cursor:not-allowed; filter:none}
+.btn.ghost{background:transparent; color:var(--link); border-color:var(--line)}
+.btn.ghost:hover{background:var(--accent-soft); border-color:var(--link); filter:none}
+.btn.danger{background:transparent; color:var(--bad); border-color:var(--bad)}
+.btn.danger:hover{background:var(--bad-bg); filter:none}
+.btn.small{min-height:32px; padding:0 10px; font-size:.82rem}
+
+/* Segmented control */
+.seg{display:flex; background:var(--sunk); border-radius:9px; padding:3px; gap:3px}
+.seg button{
+  flex:1; border:0; background:transparent; padding:7px 6px; border-radius:7px; cursor:pointer; font-size:.86rem; font-weight:500; color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+.seg button[aria-pressed="true"]{background:var(--surface); color:var(--fg); box-shadow:0 1px 2px rgba(0,0,0,.12)}
+
+/* Form controls */
+select,input[type=text],input[type=email],input[type=password],input[type=url],input[type=tel],input[type=number],input[type=date],input[type=time],input[type=search],textarea{
+  width:100%; min-width:0; min-height:38px; padding:7px 10px; border-radius:8px; border:1px solid var(--line); background:var(--sunk);
+}
+textarea{min-height:70px; resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--link); outline:none}
+
+/* Theme button */
+.theme-btn{
+  display:inline-flex; align-items:center; gap:8px; min-height:36px; padding:0 12px; border-radius:99px; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface); color:var(--fg); font-size:.85rem; font-weight:500;
+}
+.theme-btn:hover{border-color:var(--muted)}
+.theme-btn svg{width:16px; height:16px; fill:none; stroke:var(--fg); stroke-width:2; stroke-linecap:round}
+
+/* Notes and pills */
+.note{font-size:.84rem; padding:8px 12px; border-radius:8px; margin:0}
+.note.warn{background:var(--warn-bg); color:var(--warn)}
+.note.bad{background:var(--bad-bg); color:var(--bad)}
+.note.ok{background:var(--ok-bg); color:var(--ok)}
+.pill{display:inline-flex; align-items:center; font-size:.72rem; font-weight:600; padding:2px 8px; border-radius:99px; background:var(--sunk); color:var(--muted); white-space:nowrap}
+.pill.pending{background:var(--warn-bg); color:var(--warn)}
+.pill.approved{background:var(--ok-bg); color:var(--ok)}
+.pill.rejected{background:var(--bad-bg); color:var(--bad)}
+.sw{width:9px; height:9px; border-radius:50%; display:inline-block; flex:none}
+.sw.rotary{background:var(--rotary)} .sw.rotaract{background:var(--rotaract)} .sw.me{background:var(--me)}
+
+/* Footer credit */
+footer.credit{
+  margin-top:12px; border-top:1px solid var(--line); padding-top:22px;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px 24px;
+}
+.credit-main{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
+.club-logo{
+  width:180px; max-width:100%; aspect-ratio:480/167; background:var(--accent);
+  -webkit-mask:url("club-logo.png") center/contain no-repeat; mask:url("club-logo.png") center/contain no-repeat;
+}
+.credit-note{margin:0; font-size:.8rem; color:var(--muted); display:flex; flex-direction:column; gap:2px; text-align:right}
+.credit-note a{color:var(--fg); font-weight:600; text-decoration:none; border-bottom:1px solid var(--line)}
+.credit-note a:hover{border-color:var(--fg)}
+@media (max-width:600px){ .credit-note{text-align:left} }
+
+@media (prefers-reduced-motion: reduce){ *{transition:none!important; scroll-behavior:auto!important; animation:none!important} }
