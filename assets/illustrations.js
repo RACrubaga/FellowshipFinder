@@ -43,21 +43,5 @@ window.FF_ILLO = {
       '<circle class="i-ring i-ring2" cx="60" cy="92" r="10"/>' +
       '<path class="i-main" d="M60 22c-14 0-24 10.4-24 23.6C36 62.6 60 88 60 88s24-25.4 24-42.4C84 32.4 74 22 60 22z"/>' +
       '<circle class="i-surface" cx="60" cy="46" r="9"/>' +
-    '</svg>',
-
-  // Slim banner: Kampala's hills with pins joined by a route
-  hills:
-    '<svg class="hills-svg" viewBox="0 -26 1200 116" preserveAspectRatio="xMidYMax slice" aria-hidden="true">' +
-      '<path class="h-back" d="M0 90V58C60 44 110 28 170 32S260 54 320 50 420 16 490 16 600 44 660 42 750 20 820 18 930 40 990 42 1100 28 1200 24V90z"/>' +
-      '<path class="h-front" d="M0 90V72C70 66 120 48 190 50S290 68 360 66 480 40 550 42 650 64 720 64 830 44 900 44 1020 62 1200 64V90z"/>' +
-      '<path class="h-route" d="M120 66C200 40 260 52 330 44S470 22 530 30 650 52 720 46 860 26 930 32s140 26 200 22 60-6 80-8"/>' +
-      '<g class="h-pins">' +
-        '<g transform="translate(330 44)"><path class="h-pin-c" d="M0 0c-6-7-9-11-9-15a9 9 0 0118 0c0 4-3 8-9 15z"/><circle class="h-dot" cy="-15" r="3.2"/><text y="-30">Rubaga</text></g>' +
-        '<g transform="translate(530 30)"><path class="h-pin-g" d="M0 0c-6-7-9-11-9-15a9 9 0 0118 0c0 4-3 8-9 15z"/><circle class="h-dot" cy="-15" r="3.2"/><text y="-30">Mengo</text></g>' +
-        '<g transform="translate(720 46)"><path class="h-pin-c" d="M0 0c-6-7-9-11-9-15a9 9 0 0118 0c0 4-3 8-9 15z"/><circle class="h-dot" cy="-15" r="3.2"/><text y="-30">Nakasero</text></g>' +
-        '<g transform="translate(930 32)"><path class="h-pin-g" d="M0 0c-6-7-9-11-9-15a9 9 0 0118 0c0 4-3 8-9 15z"/><circle class="h-dot" cy="-15" r="3.2"/><text y="-30">Kololo</text></g>' +
-        '<g transform="translate(160 62)"><path class="h-pin-g" d="M0 0c-6-7-9-11-9-15a9 9 0 0118 0c0 4-3 8-9 15z"/><circle class="h-dot" cy="-15" r="3.2"/><text y="-30">Namirembe</text></g>' +
-        '<g transform="translate(1100 52)"><path class="h-pin-c" d="M0 0c-6-7-9-11-9-15a9 9 0 0118 0c0 4-3 8-9 15z"/><circle class="h-dot" cy="-15" r="3.2"/><text y="-30">Ntinda</text></g>' +
-      '</g>' +
     '</svg>'
 };
