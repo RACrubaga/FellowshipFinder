@@ -118,9 +118,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--link); outline:none}
 }
 .foot-head{margin:0; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; font-weight:600}
 .foot-label{color:var(--foot-gold)}
-.foot-club{color:var(--foot-fg); text-decoration:underline; text-decoration-color:var(--foot-line); text-underline-offset:4px}
-.foot-club:hover{text-decoration-color:var(--foot-gold)}
-.foot-club:focus-visible{outline:2px solid var(--foot-gold); outline-offset:3px}
+.foot-club{color:var(--foot-fg)}
 .foot-brand{display:block; text-decoration:none; border-top:1px solid var(--foot-line); padding-top:22px; width:min(100%, 320px)}
 .foot-brand:focus-visible{outline:2px solid var(--foot-gold); outline-offset:6px}
 .foot-brand:hover .club-logo{opacity:.85}
