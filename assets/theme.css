@@ -113,25 +113,25 @@ input:focus,select:focus,textarea:focus{border-color:var(--link); outline:none}
 .site-foot{background:var(--foot-bg); color:var(--foot-fg); padding-bottom:env(safe-area-inset-bottom, 0px)}
 .foot-in{
   max-width:1180px; margin:0 auto; box-sizing:content-box;
-  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:32px;
-  display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:28px 40px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:36px 40px;
+  display:flex; flex-direction:column; align-items:center; text-align:center; gap:22px;
 }
-.foot-label{font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; font-weight:600; color:var(--foot-gold)}
-.foot-meet{display:flex; flex-direction:column; gap:10px; min-width:0}
-.foot-dl{margin:0; display:flex; flex-wrap:wrap; gap:10px 32px}
-.foot-dl div{display:flex; flex-direction:column; gap:2px; min-width:0}
+.foot-head{margin:0; font-size:.8rem; letter-spacing:.12em; text-transform:uppercase; font-weight:600}
+.foot-label{color:var(--foot-gold)}
+.foot-club{color:var(--foot-fg)}
+.foot-dl{margin:0; display:flex; flex-wrap:wrap; justify-content:center; gap:14px 44px}
+.foot-dl div{display:flex; flex-direction:column; align-items:center; gap:2px; min-width:0}
 .foot-dl dt{font-size:.75rem; color:var(--foot-muted)}
 .foot-dl dd{margin:0; font-size:1rem; font-weight:600}
-.foot-dl a{color:var(--foot-gold); font-weight:500; text-underline-offset:3px}
-.foot-small{margin:4px 0 0; font-size:.8rem; color:var(--foot-muted)}
-.foot-brand{display:flex; align-items:center; gap:16px; text-decoration:none; border-radius:8px}
+.foot-dl dd.foot-map{font-size:.85rem; font-weight:500}
+.foot-dl a{color:var(--foot-gold); text-underline-offset:3px}
+.foot-brand{display:block; text-decoration:none; border-top:1px solid var(--foot-line); padding-top:22px; width:min(100%, 320px)}
 .foot-brand:focus-visible{outline:2px solid var(--foot-gold); outline-offset:6px}
 .foot-brand:hover .club-logo{opacity:.85}
 .club-logo{
-  display:block; width:180px; max-width:100%; aspect-ratio:480/167; background:var(--foot-brand);
+  display:block; width:190px; max-width:100%; margin:0 auto; aspect-ratio:480/167; background:var(--foot-brand);
   -webkit-mask:url("club-logo.png") center/contain no-repeat; mask:url("club-logo.png") center/contain no-repeat;
 }
-@media (max-width:600px){ .foot-in{flex-direction:column; align-items:flex-start} }
 
 /* Illustrations */
 .illo{display:block; width:100%; max-width:200px; height:auto; margin:0 auto}
