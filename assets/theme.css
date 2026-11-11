@@ -121,21 +121,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--link); outline:none}
 .foot-club{color:var(--foot-fg); text-decoration:underline; text-decoration-color:var(--foot-line); text-underline-offset:4px}
 .foot-club:hover{text-decoration-color:var(--foot-gold)}
 .foot-club:focus-visible{outline:2px solid var(--foot-gold); outline-offset:3px}
-.foot-dl{margin:0; display:flex; flex-wrap:wrap; justify-content:center; gap:14px 44px}
-.foot-dl div{display:flex; flex-direction:column; align-items:center; gap:2px; min-width:0}
-.foot-dl dt{font-size:.75rem; color:var(--foot-muted)}
-.foot-dl dd{margin:0; font-size:1rem; font-weight:600}
-.foot-dl dd.foot-map{font-size:.85rem; font-weight:500}
-.foot-dl a{color:var(--foot-gold); text-underline-offset:3px}
 .foot-brand{display:block; text-decoration:none; border-top:1px solid var(--foot-line); padding-top:22px; width:min(100%, 320px)}
 .foot-brand:focus-visible{outline:2px solid var(--foot-gold); outline-offset:6px}
 .foot-brand:hover .club-logo{opacity:.85}
 /* Phones: centred (above). Wider screens: everything left-aligned */
 @media (min-width:701px){
   .foot-in{align-items:flex-start; text-align:left}
-  .foot-dl{justify-content:flex-start}
-  .foot-dl div{align-items:flex-start}
-  .foot-brand .club-logo{margin:0}
+      .foot-brand .club-logo{margin:0}
 }
 .club-logo{
   display:block; width:190px; max-width:100%; margin:0 auto; aspect-ratio:480/167; background:var(--foot-brand);
