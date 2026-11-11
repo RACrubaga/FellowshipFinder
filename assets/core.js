@@ -139,8 +139,9 @@
     return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   }
   function initTheme(btn){
+    // Opens in light mode unless the person has switched to dark on this device
     const saved = store.get("theme", null);
-    if (saved === "dark" || saved === "light") document.documentElement.setAttribute("data-theme", saved);
+    document.documentElement.setAttribute("data-theme", saved === "dark" ? "dark" : "light");
     if (!btn) return;
     const paint = () => {
       const dark = currentTheme() === "dark";

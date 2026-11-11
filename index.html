@@ -14,12 +14,19 @@
 <link rel="stylesheet" href="assets/theme.css">
 <style>
 /* Layout: two-pane locator. Left: location controls + distance radar (sticky on wide screens). Right: meeting list with ticket-style date stubs. */
-header.top{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:12px 24px}
-.brand h1{font-size:clamp(1.7rem, 3.4vw, 2.4rem); font-weight:700; letter-spacing:-.02em; line-height:1.05}
-.brand h1 span{color:var(--accent)}
-.brand p{margin:6px 0 0; color:var(--muted); max-width:60ch}
-.head-side{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
-.sample-note{font-size:.82rem; background:var(--warn-bg); color:var(--warn); padding:6px 10px; border-radius:6px; font-weight:500}
+header.top{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:6px 16px}
+.top-actions{display:flex; align-items:center; gap:8px; justify-self:end}
+.tagline{grid-column:1 / -1; margin:0; color:var(--muted); max-width:60ch}
+@media (max-width:520px){ .top-actions .theme-btn span{display:none} .top-actions .theme-btn{padding:0 10px} }
+.loc-prompt{display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; padding:14px 16px; border-radius:12px; border:1px solid var(--line); background:var(--surface)}
+.loc-prompt.denied{background:var(--warn-bg); border-color:transparent; color:var(--warn)}
+.loc-prompt .lp-text{flex:1 1 260px; min-width:0; font-size:.9rem}
+.loc-prompt .lp-text strong{display:block; font-size:1rem; color:var(--fg)}
+.loc-prompt.denied .lp-text strong{color:var(--warn)}
+.empty .row{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:12px}
+header.top h1{font-size:clamp(1.6rem, 3.4vw, 2.4rem); font-weight:700; letter-spacing:-.02em; line-height:1.05}
+header.top h1 span{color:var(--accent)}
+.sample-note{justify-self:start; font-size:.82rem; background:var(--warn-bg); color:var(--warn); padding:6px 10px; border-radius:6px; font-weight:500}
 
 .layout{display:grid; grid-template-columns:minmax(0, 360px) minmax(0, 1fr); gap:24px; align-items:start}
 @media (max-width:860px){ .layout{grid-template-columns:minmax(0,1fr)} }
@@ -93,16 +100,15 @@ header.top{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:s
 <body>
 <div class="wrap">
   <header class="top">
-    <div class="brand">
-      <h1>Fellowship <span>Finder</span></h1>
-      <p>Rotary and Rotaract meetings near you, with the next date, time and venue. Rotary District 9214.</p>
-    </div>
-    <div class="head-side">
-      <div class="sample-note" id="dataNote" role="note" hidden></div>
+    <h1>Fellowship <span>Finder</span></h1>
+    <div class="top-actions">
       <a class="btn ghost small" href="admin.html">Club login</a>
       <button class="theme-btn" id="themeBtn" type="button"></button>
     </div>
+    <p class="tagline">Rotary and Rotaract meetings near you, with the next date, time and venue. Rotary District 9214.</p>
   </header>
+  <div class="sample-note" id="dataNote" role="note" hidden></div>
+  <div class="loc-prompt" id="locPrompt" role="status" hidden></div>
 
   <div class="layout">
     <aside class="panel" aria-label="Search settings">
@@ -159,7 +165,7 @@ header.top{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:s
     ["Nansana", 0.3640, 32.5280], ["Entebbe", 0.0512, 32.4637], ["Mukono", 0.3533, 32.7553]
   ];
   const MODE = {in_person:"In person", hybrid:"In person + online", online:"Online"};
-  const state = { here:null, radius:F.store.get("radius", 10), type:"all", when:"any", sort:"soonest", hot:null, loaded:false, error:null };
+  const state = { here:null, radius:F.store.get("radius", 10), type:"all", when:"today", manual:false, located:false, sort:"soonest", hot:null, loaded:false, error:null };
   const data = { clubs:{}, meetings:[], changes:{} };
 
   // ---------- Load data ----------
@@ -199,7 +205,11 @@ header.top{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:s
     $("locStatus").className = "status"; $("locStatus").textContent = "Showing clubs around " + a[0] + ".";
     F.store.set("area", a[0]);
   }
-  areaSel.addEventListener("change", () => { setArea(areaSel.value); render(); });
+  areaSel.addEventListener("change", () => { state.manual = true; setArea(areaSel.value); render(); });
+  function setSeg(id, key, v){
+    state[key] = v;
+    [...$(id).children].forEach(c => c.setAttribute("aria-pressed", String(c.dataset.val == String(v))));
+  }
   function seg(el, key, opts, onChange){
     el.innerHTML = "";
     opts.forEach(([v, label]) => {
@@ -215,22 +225,56 @@ header.top{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:s
   }
   seg($("radius"), "radius", [[2,"2 km"],[5,"5 km"],[10,"10 km"],[25,"25 km"]], v => F.store.set("radius", +v));
   seg($("type"), "type", [["all","All"],["rotaract","Rotaract"],["rotary","Rotary"]]);
-  seg($("when"), "when", [["any","Any day"],["week","Next 7 days"],["today","Today"]]);
+  seg($("when"), "when", [["today","Today"],["week","Next 7 days"],["any","Any day"]]);
   seg($("sort"), "sort", [["soonest","Soonest first"],["nearest","Nearest first"]]);
 
-  $("gps").addEventListener("click", () => {
+  // ---------- Location: ask straight away, explain how to turn it on if it's off ----------
+  function isIOS(){ return /iPhone|iPad|iPod/.test(navigator.userAgent); }
+  function lpShow(kind){
+    const el = $("locPrompt");
+    if (kind === "hidden"){ el.hidden = true; return; }
+    el.hidden = false; el.className = "loc-prompt" + (kind === "denied" || kind === "unsupported" ? " denied" : "");
+    if (kind === "asking"){
+      el.innerHTML = '<div class="lp-text"><strong>Allow location to see clubs near you</strong>Tap <b>Allow</b> when your browser asks. Your location stays on this device.</div>';
+    } else if (kind === "denied"){
+      const how = isIOS()
+        ? "On iPhone: open <b>Settings → Privacy &amp; Security → Location Services</b>, make sure it's on and your browser is set to <b>While Using</b>. In Safari you can also tap <b>aA</b> in the address bar → <b>Website Settings → Location → Allow</b>."
+        : "Tap the <b>lock or settings icon</b> next to the web address, open <b>Permissions</b> or <b>Site settings</b>, and set <b>Location</b> to <b>Allow</b>. Also check your phone's location (GPS) is switched on.";
+      el.innerHTML = '<div class="lp-text"><strong>Turn on location to see clubs near you</strong>' + how + ' Then tap <b>Try again</b>. Until then, clubs around ' + esc(areaSel.value) + ' are shown; you can also choose another area under Your location.</div>' +
+        '<button class="btn" type="button" id="lpRetry">Try again</button>';
+      $("lpRetry").addEventListener("click", () => locate(true));
+    } else if (kind === "unavailable"){
+      el.innerHTML = '<div class="lp-text"><strong>We couldn\'t find your location</strong>Check that your phone\'s location (GPS) is on and you have signal, then try again. Clubs around ' + esc(areaSel.value) + ' are shown for now.</div>' +
+        '<button class="btn" type="button" id="lpRetry">Try again</button>';
+      $("lpRetry").addEventListener("click", () => locate(true));
+    } else if (kind === "unsupported"){
+      el.innerHTML = '<div class="lp-text"><strong>This browser can\'t share your location</strong>Pick your area on the left to see nearby clubs.</div>';
+    }
+  }
+  function locate(fromUser){
     const st = $("locStatus");
-    if (!("geolocation" in navigator)){ st.className = "status err"; st.textContent = "This browser can't share location. Pick your area instead."; return; }
+    if (!("geolocation" in navigator) || !window.isSecureContext){ lpShow("unsupported"); return; }
     st.className = "status"; st.textContent = "Finding your location…";
+    if (!state.located) lpShow("asking");
     navigator.geolocation.getCurrentPosition(pos => {
-      state.here = {lat:pos.coords.latitude, lng:pos.coords.longitude};
+      state.here = {lat:pos.coords.latitude, lng:pos.coords.longitude}; state.located = true; state.manual = false;
+      st.className = "status";
       st.textContent = "Showing clubs around your current location (accurate to about " + Math.round(pos.coords.accuracy) + " m).";
-      render();
-    }, () => {
+      lpShow("hidden"); render();
+    }, err => {
       st.className = "status err";
-      st.textContent = "Couldn't get your location. Allow location access for this site in your browser settings, or pick your area.";
-    }, {timeout:10000, maximumAge:300000});
-  });
+      st.textContent = err.code === 1 ? "Location is off for this site. Showing clubs around " + areaSel.value + "." : "Couldn't get your location. Showing clubs around " + areaSel.value + ".";
+      lpShow(err.code === 1 ? "denied" : "unavailable");
+      if (fromUser && err.code === 1) $("locPrompt").scrollIntoView({block:"nearest"});
+    }, {enableHighAccuracy:true, timeout:15000, maximumAge:120000});
+  }
+  $("gps").addEventListener("click", () => locate(true));
+  // If the person turns location on in settings while the page is open, pick it up
+  try {
+    navigator.permissions.query({name:"geolocation"}).then(p => {
+      p.onchange = () => { if (p.state === "granted") locate(false); else if (p.state === "denied") lpShow("denied"); };
+    }).catch(() => {});
+  } catch(e){}
 
   // ---------- Results ----------
   function compute(){
@@ -362,7 +406,15 @@ header.top{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:s
     const whenTxt = {any:"", week:" meeting in the next 7 days", today:" meeting today"}[state.when];
     const typeTxt = {all:"clubs", rotary:"Rotary clubs", rotaract:"Rotaract clubs"}[state.type];
     $("count").textContent = items.length + " " + (items.length === 1 ? typeTxt.replace(/s$/, "") : typeTxt) + whenTxt + " within " + state.radius + " km";
-    $("list").innerHTML = items.length ? items.map(card).join("") : '<div class="empty"><strong>No clubs match yet</strong>Try a wider distance, another day, or a different area.</div>';
+    let emptyMsg = '<div class="empty"><strong>No clubs match yet</strong>Try a wider distance, another day, or a different area.</div>';
+    if (state.when === "today") emptyMsg = '<div class="empty"><strong>No clubs meet today within ' + state.radius + ' km</strong>See which clubs meet later this week, or search a wider area.' +
+      '<div class="row"><button class="btn" type="button" data-empty="week">Show the next 7 days</button>' + (state.radius < 25 ? '<button class="btn ghost" type="button" data-empty="wider">Search within 25 km</button>' : '') + '</div></div>';
+    $("list").innerHTML = items.length ? items.map(card).join("") : emptyMsg;
+    $("list").querySelectorAll("[data-empty]").forEach(b => b.addEventListener("click", () => {
+      if (b.dataset.empty === "week") setSeg("when", "when", "week");
+      else { setSeg("radius", "radius", 25); F.store.set("radius", 25); }
+      render();
+    }));
     drawRadar(items);
     document.querySelectorAll(".club").forEach(c => {
       c.addEventListener("mouseenter", () => setHot(c.dataset.id));
@@ -372,6 +424,7 @@ header.top{display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:s
 
   setArea(F.store.get("area", "Kampala Central"));
   drawRadar([]);
+  locate(false);
   load().then(() => { state.loaded = true; render(); }, err => {
     state.loaded = true;
     state.error = /Failed to fetch|NetworkError/i.test(String(err && err.message)) ? "Check your internet connection and refresh the page." : "Please try again in a few minutes.";
