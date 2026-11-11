@@ -159,11 +159,18 @@ header.top h1 span{color:var(--accent)}
     </main>
   </div>
 
-  <aside class="guide-note" aria-label="User guide">
-    <svg class="guide-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg>
-    <p><strong>New to Fellowship Finder?</strong> The guide shows how to find a fellowship near you and, for club officers, how to keep meeting times and venues up to date.</p>
-    <a class="btn ghost" href="guide.html">Read the guide</a>
-  </aside>
+  <div class="notes">
+    <aside class="guide-note" aria-label="User guide">
+      <svg class="guide-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z"/><path d="M4 20.5A2.5 2.5 0 0 0 6.5 23H20v-5"/><path d="M8 7h8M8 11h6"/></svg>
+      <p><strong>New to Fellowship Finder?</strong> The guide shows how to find a fellowship near you and get the most out of each club card.</p>
+      <a class="btn ghost" href="guide.html">Read the guide</a>
+    </aside>
+    <aside class="guide-note" aria-label="Add your club">
+      <svg class="guide-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><path d="M12 6.5v6M9 9.5h6"/></svg>
+      <p><strong>Is your club missing?</strong> Send us its meeting day, time and venue and the Rotaract Club of Rubaga team will add it.</p>
+      <a class="btn ghost" href="request.html">Add your club</a>
+    </aside>
+  </div>
 </div>
 <footer class="site-foot">
   <div class="foot-in">
@@ -379,9 +386,7 @@ header.top h1 span{color:var(--accent)}
     let notices = "";
     if (it.cancelledBefore) notices += '<div class="notice cancel"><strong>Cancelled ' + F.fmtDayHtml(it.cancelledBefore.day) + (it.cancelledBefore.reason ? ':</strong> ' + esc(it.cancelledBefore.reason) + '.' : '.</strong>') + '</div>';
     if (n && n.moved) notices += '<div class="notice moved"><strong>Changed for this meeting' + (n.reason ? ':</strong> ' + esc(n.reason) + '.' : '.</strong>') + ' Now ' + F.fmtDayHtml(n.day) + ', ' + F.fmtTime(n.time) + (n.venue_name !== m.venue_name ? ' at ' + esc(n.venue_name) : '') + '.</div>';
-    const ago = F.daysAgo(c.verified_at), stale = ago == null || ago > 90;
     const chips = '<span class="chip">' + MODE[m.mode] + '</span>' +
-      '<span class="chip' + (stale ? ' stale' : '') + '">' + (ago == null ? 'Not yet confirmed by the club' : stale ? 'Not confirmed for ' + ago + ' days' : 'Confirmed ' + (ago === 0 ? 'today' : ago + ' day' + (ago === 1 ? '' : 's') + ' ago')) + '</span>' +
       (c.is_sample ? '<span class="chip sample">Sample</span>' : '');
     const when = n ? '<div class="when">' + relLabel(n) + ' · ' + F.fmtDayHtml(n.day) + ', ' + F.fmtTime(n.time) + '</div>' : '<div class="when">No meeting scheduled in the next 10 weeks</div>';
     const wa = c.contact_whatsapp ? String(c.contact_whatsapp).replace(/[^\d]/g, "") : "";

@@ -88,13 +88,13 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
         <li class="sub"><a href="#cards">Reading a club card</a></li>
         <li class="sub"><a href="#nothing">When nothing shows</a></li>
         <li class="sub"><a href="#homescreen">Add it to your phone</a></li>
-        <li><a href="#officers">For club officers</a></li>
+        <li class="sub"><a href="#missing">Is your club missing?</a></li>
+        <li><a href="#officers">For club admins</a></li>
         <li class="sub"><a href="#access">Getting access</a></li>
         <li class="sub"><a href="#register">Registering your club</a></li>
         <li class="sub"><a href="#meetings">Adding a meeting</a></li>
         <li class="sub"><a href="#changes">Cancelling or moving a date</a></li>
         <li class="sub"><a href="#confirm">Keeping details current</a></li>
-        <li><a href="#moderators">For moderators</a></li>
         <li><a href="#privacy">Privacy</a></li>
         <li><a href="#faq">Questions</a></li>
       </ol>
@@ -134,8 +134,6 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
         <ul class="legend-list">
           <li><span class="chip today">Today</span><span>When the meeting is: Today, Tomorrow, This Friday, or In 9 days. <em>Happening now</em> means it has started.</span></li>
           <li><span class="chip">In person</span><span>How the club meets: in person, in person + online, or online.</span></li>
-          <li><span class="chip">Confirmed 12 days ago</span><span>When the club last checked its details are correct.</span></li>
-          <li><span class="chip stale">Not confirmed for 120 days</span><span>Details may be out of date. Consider contacting the club first.</span></li>
           <li><span class="chip cancel">Cancelled</span><span>That meeting won't happen; the card shows the reason and the next date.</span></li>
           <li><span class="chip moved">Changed for this meeting</span><span>The time or venue is different this once.</span></li>
         </ul>
@@ -155,18 +153,25 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
           <li><strong>iPhone (Safari):</strong> tap the <strong>Share</strong> button, then <strong>Add to Home Screen</strong>.</li>
         </ul>
         <p>It then opens full-screen from its own icon, like an app.</p>
+        <h3 id="missing">Is your club missing?</h3>
+        <p>Fellowship Finder is run by the <strong>Rotaract Club of Rubaga</strong>, whose team adds and updates club information. If your club isn't listed, or its details are out of date:</p>
+        <ul>
+          <li>Fill in the short <a href="request.html">Add your club</a> form with the meeting day, time and venue, or</li>
+          <li>email <strong>info@rotaractrubaga.org</strong>.</li>
+        </ul>
+        <p>The team checks the details and lets you know when your club is live, usually within a week.</p>
         <p class="tip"><strong>Light or dark?</strong> The page opens in light mode. Use the button in the top-right corner to switch; your choice is remembered on that device.</p>
       </section>
 
       <!-- ===================== OFFICERS ===================== -->
       <section class="sec" id="officers">
-        <h2>For club officers</h2>
-        <span class="pill who">Presidents, secretaries and club admins</span>
-        <p>Club officers keep their club's details, meeting times and venue up to date, so members and visitors always find the right place.</p>
+        <h2>For club admins</h2>
+        <span class="pill who">People given access by the Rotaract Club of Rubaga</span>
+        <p>Fellowship Finder is maintained by the Rotaract Club of Rubaga team. Club admins they invite can keep their own club's details, meeting times and venue up to date.</p>
 
         <h3 id="access">Getting access</h3>
         <ol>
-          <li>Ask the district moderator to invite you. Accounts are by invitation only.</li>
+          <li>Ask the Rotaract Club of Rubaga team for access at <strong>info@rotaractrubaga.org</strong>. Accounts are by invitation only.</li>
           <li>Open the invitation email and tap the link. It opens the Fellowship Finder login page, already signed in.</li>
           <li>Open <strong>My account</strong> (bottom of the club list), enter your name, and set a password of at least 10 characters.</li>
           <li>Next time, tap <strong>Login</strong> at the top of the public page and sign in with your email and password.</li>
@@ -180,7 +185,7 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
           <li>Tick the consent box only if the club agrees to show its WhatsApp number and email publicly. Otherwise they stay private.</li>
           <li>Tap <strong>Save club</strong>. You become its admin straight away.</li>
         </ol>
-        <p class="tip warn"><strong>Pending until approved.</strong> New clubs are hidden from the public page until a moderator approves them. You can add meetings in the meantime.</p>
+        <p class="tip warn"><strong>Pending until approved.</strong> New clubs are hidden from the public page until the Rotaract Club of Rubaga team approves them. You can add meetings in the meantime.</p>
 
         <h3 id="meetings">Adding a meeting</h3>
         <ol>
@@ -209,30 +214,7 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
         <p>Changes show on the public page straight away.</p>
 
         <h3 id="confirm">Keeping details current</h3>
-        <p>Every month or so, open <strong>Details</strong> and tap <strong>Confirm details and meetings are current</strong>. Visitors see when you last confirmed; clubs not confirmed for over 90 days are flagged as possibly out of date.</p>
-      </section>
-
-      <!-- ===================== MODERATORS ===================== -->
-      <section class="sec" id="moderators">
-        <h2>For moderators</h2>
-        <span class="pill who">District team</span>
-        <ul>
-          <li><strong>Approving clubs:</strong> use the <strong>Pending</strong> filter, open a club, check its details and RI club number, then tap <strong>Approve</strong> or <strong>Reject</strong>. Approved clubs appear publicly straight away.</li>
-          <li><strong>Adding a club admin:</strong> first invite the person from Supabase (<em>Authentication → Users → Invite user</em>). Then open the club, go to <strong>Club admins</strong>, enter their email and tap <strong>Add admin</strong>.</li>
-          <li><strong>Removing access:</strong> tap <strong>Remove</strong> next to their name under <strong>Club admins</strong>.</li>
-          <li><strong>Deleting a club:</strong> open <strong>Details</strong> and use <strong>Delete club</strong> at the bottom. This also removes its meetings and cannot be undone.</li>
-          <li><strong>Making someone a moderator:</strong> in Supabase's SQL Editor run <code>update public.profiles set role = 'moderator' where email = 'name@example.com';</code></li>
-        </ul>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Who</th><th>Can do</th></tr></thead>
-            <tbody>
-              <tr><td>Visitors</td><td>See approved clubs, meetings and cancellations. Contacts only where the club agreed.</td></tr>
-              <tr><td>Club admins</td><td>Register clubs (pending), edit their own clubs, meetings and date changes.</td></tr>
-              <tr><td>Moderators</td><td>Everything, plus approve, reject or delete clubs and assign club admins.</td></tr>
-            </tbody>
-          </table>
-        </div>
+        <p>Every month or so, open <strong>Details</strong> and tap <strong>Confirm details and meetings are current</strong>. This tells the Rotaract Club of Rubaga team your details are still right. Only admins see it.</p>
       </section>
 
       <!-- ===================== PRIVACY ===================== -->
@@ -241,7 +223,8 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
         <ul>
           <li>Your location never leaves your phone. Distances are worked out on your device and are not sent or stored.</li>
           <li>A club's WhatsApp number and email are shown only if the club ticked the consent box.</li>
-          <li>Officer accounts hold only an email address and name, used to sign in and to show who manages a club.</li>
+          <li>Admin accounts hold only an email address and name, used to sign in.</li>
+          <li>The <a href="request.html">Add your club</a> form is emailed to the Rotaract Club of Rubaga. Your own contact details are used only to reply to you.</li>
         </ul>
       </section>
 
@@ -250,6 +233,7 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
         <h2>Questions</h2>
         <h3>Why can't I see my club on the public page?</h3>
         <ul>
+          <li>It hasn't been added yet. Use the <a href="request.html">Add your club</a> form.</li>
           <li>It is still <strong>Pending</strong> approval, or marked as not active.</li>
           <li>Its meeting is set to hidden (untick and re-tick <em>Show this meeting on the public page</em>).</li>
           <li>It doesn't meet on the day chosen under <strong>When</strong>, or it is beyond the distance chosen. Try <em>Any time</em> and 15 km.</li>
@@ -257,7 +241,7 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
         <h3>What time zone are meetings in?</h3>
         <p>Kampala time (East Africa Time).</p>
         <h3>A club's details look wrong. What should I do?</h3>
-        <p>Check the <em>Confirmed</em> label on its card. If it hasn't been confirmed recently, contact the club before you go, or let a moderator know.</p>
+        <p>Contact the club before you go, and let the Rotaract Club of Rubaga know through the <a href="request.html">Add your club</a> form (choose <em>Update my club's details</em>) or at <strong>info@rotaractrubaga.org</strong>.</p>
       </section>
     </main>
   </div>

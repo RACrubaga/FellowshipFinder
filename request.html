@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="Is your Rotaract or Rotary club missing from Fellowship Finder? Ask the Rotaract Club of Rubaga to add it.">
+<title>Add Your Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#D22163">
+<style>
+/* Layout: header; then the request form (left) with what happens next (right). */
+header.top{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:6px 16px}
+header.top h1{font-size:clamp(1.6rem, 3.4vw, 2.4rem); font-weight:700; letter-spacing:-.02em; line-height:1.05}
+header.top h1 span{color:var(--accent)}
+header.top h1 small{font-size:.5em; font-weight:500; color:var(--muted); margin-left:8px; letter-spacing:0}
+.top-actions{display:flex; align-items:center; gap:8px; justify-self:end; flex-wrap:wrap; justify-content:flex-end}
+.tagline{grid-column:1 / -1; margin:0; color:var(--muted); max-width:62ch}
+@media (max-width:520px){ .top-actions .theme-btn span{display:none} .top-actions .theme-btn{padding:0 10px} }
+
+.layout{display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 340px); gap:24px; align-items:start}
+@media (max-width:860px){ .layout{grid-template-columns:minmax(0,1fr)} }
+.card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px 24px}
+@media (max-width:520px){ .card{padding:18px 16px} }
+.card h2{font-size:1.25rem; font-weight:700; margin-bottom:4px}
+.card > p{margin:4px 0 0; color:var(--muted)}
+form{display:flex; flex-direction:column; gap:16px; margin-top:18px}
+fieldset{border:0; padding:0; margin:0; display:flex; flex-direction:column; gap:14px}
+legend{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600; padding:0; margin-bottom:10px}
+.grid2{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px}
+@media (max-width:640px){ .grid2{grid-template-columns:minmax(0,1fr)} }
+.field{display:flex; flex-direction:column; gap:6px; min-width:0}
+.field > span{font-size:.86rem; font-weight:600}
+.field > span em{font-style:normal; color:var(--accent)}
+.field small{color:var(--muted); font-size:.78rem}
+.check{display:flex; gap:10px; align-items:flex-start; font-size:.9rem}
+.check input{margin-top:4px; width:16px; height:16px; flex:none; accent-color:var(--link)}
+.hp{position:absolute; left:-10000px; width:1px; height:1px; overflow:hidden}
+.msg{margin:0; font-size:.88rem; min-height:1.3em}
+.msg.err{color:var(--bad)}
+.side{display:flex; flex-direction:column; gap:16px}
+.side ol{margin:8px 0 0; padding-left:20px; display:flex; flex-direction:column; gap:8px}
+.side li{line-height:1.5}
+.side li::marker{color:var(--accent); font-weight:700}
+.mail{font-family:var(--font-mono); font-size:.9rem; user-select:all; color:var(--fg); word-break:break-all}
+.fine{font-size:.82rem; color:var(--muted)}
+.sent{display:flex; flex-direction:column; align-items:center; text-align:center; gap:10px; padding:20px 0}
+.sent h2{font-size:1.4rem}
+.sent p{margin:0; color:var(--muted); max-width:46ch}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Fellowship <span>Finder</span><small>Add your club</small></h1>
+    <div class="top-actions">
+      <a class="btn small" href="index.html">Find fellowships</a>
+      <button class="theme-btn" id="themeBtn" type="button"></button>
+    </div>
+    <p class="tagline">Is your club missing, or are its details out of date? Tell us and the Rotaract Club of Rubaga team will add or update it.</p>
+  </header>
+
+  <div class="layout">
+    <section class="card" id="formCard" aria-labelledby="formTitle">
+      <div id="sentView" class="sent" hidden>
+        <div id="sentIllo"></div>
+        <h2>Thanks, your request is on its way</h2>
+        <p>The Rotaract Club of Rubaga team will check the details and reply to the email address you gave, usually within a week.</p>
+        <a class="btn" href="index.html">Back to Fellowship Finder</a>
+      </div>
+
+      <div id="formView">
+        <h2 id="formTitle">Request to add or update a club</h2>
+        <p>Fields marked <span style="color:var(--accent)">*</span> are needed. It takes about two minutes.</p>
+
+        <form id="reqForm" action="https://formsubmit.co/info@rotaractrubaga.org" method="POST" novalidate>
+          <input type="hidden" name="_subject" id="subject" value="Fellowship Finder: club listing request">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" id="nextUrl" value="">
+          <div class="hp" aria-hidden="true"><label>Leave this empty <input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
+
+          <fieldset>
+            <legend>Request</legend>
+            <label class="field"><span>What would you like? <em>*</em></span>
+              <select name="Request type" id="r-type" required>
+                <option value="Add my club">Add my club</option>
+                <option value="Update my club's details">Update my club's details</option>
+              </select>
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>The club</legend>
+            <div class="grid2">
+              <label class="field"><span>Club name <em>*</em></span><input type="text" name="Club name" id="r-club" maxlength="120" required placeholder="Rotaract Club of …"></label>
+              <label class="field"><span>Club type <em>*</em></span>
+                <select name="Club type" id="r-ctype" required><option value="Rotaract">Rotaract</option><option value="Rotary">Rotary</option></select>
+              </label>
+              <label class="field"><span>RI club number</span><input type="text" inputmode="numeric" name="RI club number" id="r-ri" maxlength="10"><small>From My Rotary, if you have it.</small></label>
+              <label class="field"><span>Area or town</span><input type="text" name="Area" id="r-area" maxlength="80" placeholder="e.g. Ntinda, Kampala"></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Meetings</legend>
+            <div class="grid2">
+              <label class="field"><span>When does the club meet? <em>*</em></span><input type="text" name="Meeting day" id="r-when" maxlength="120" required placeholder="e.g. Every Tuesday, or 1st & 3rd Friday"></label>
+              <label class="field"><span>Start time <em>*</em></span><input type="time" name="Start time" id="r-time" required></label>
+            </div>
+            <label class="field"><span>Venue <em>*</em></span><input type="text" name="Venue" id="r-venue" maxlength="160" required placeholder="Venue name and area"></label>
+            <label class="field"><span>Google Maps link to the venue</span><input type="url" name="Venue map link" id="r-map" maxlength="300" placeholder="https://maps.app.goo.gl/…"><small>In Google Maps, open the venue, tap Share and copy the link.</small></label>
+            <label class="field"><span>Anything else we should know?</span><textarea name="Notes" id="r-notes" maxlength="1000" placeholder="Online meetings, changes coming up, a public WhatsApp number for the club…"></textarea></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>You</legend>
+            <div class="grid2">
+              <label class="field"><span>Your name <em>*</em></span><input type="text" name="Your name" id="r-name" maxlength="80" required autocomplete="name"></label>
+              <label class="field"><span>Your role in the club <em>*</em></span><input type="text" name="Your role" id="r-role" maxlength="80" required placeholder="e.g. Secretary"></label>
+              <label class="field"><span>Your email <em>*</em></span><input type="email" name="email" id="r-email" maxlength="120" required autocomplete="email"><small>We'll reply here.</small></label>
+              <label class="field"><span>Phone or WhatsApp</span><input type="tel" name="Phone" id="r-phone" maxlength="20" autocomplete="tel"></label>
+            </div>
+            <label class="check"><input type="checkbox" id="r-consent" name="Consent" value="Confirmed: officer of this club and agrees to share these details" required><span>I'm an officer of this club, and I agree to share these details with the Rotaract Club of Rubaga so it can list the club on Fellowship Finder. <em style="font-style:normal; color:var(--accent)">*</em></span></label>
+          </fieldset>
+
+          <p class="msg" id="formMsg" aria-live="polite"></p>
+          <div><button class="btn" type="submit" id="sendBtn">Send request</button></div>
+          <p class="fine">Your request is emailed to the Rotaract Club of Rubaga through FormSubmit, a form-forwarding service. After you press Send you may be asked to tick an "I'm not a robot" box. Only the club name, meeting time and venue are shown publicly; your own contact details are used only to reply to you.</p>
+        </form>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="card">
+        <h2>What happens next</h2>
+        <ol>
+          <li>We check the details with your club.</li>
+          <li>We add the club and its meetings to Fellowship Finder.</li>
+          <li>We email you when it's live, usually within a week.</li>
+        </ol>
+      </section>
+      <section class="card">
+        <h2>Prefer email?</h2>
+        <p class="fine" style="margin-top:6px">Write to the Rotaract Club of Rubaga with your club's name, meeting day, time and venue:</p>
+        <p class="mail" style="margin:8px 0 0">info@rotaractrubaga.org</p>
+        <div class="row" style="display:flex; gap:8px; margin-top:12px; flex-wrap:wrap">
+          <button class="btn ghost small" type="button" id="copyMail">Copy address</button>
+          <a class="btn ghost small" href="mailto:info@rotaractrubaga.org?subject=Fellowship%20Finder%3A%20club%20listing%20request">Open email app</a>
+        </div>
+      </section>
+    </aside>
+  </div>
+</div>
+<footer class="site-foot">
+  <div class="foot-in">
+    <p class="foot-head"><span class="foot-label">Powered by:</span> <span class="foot-club">ROTARACT CLUB OF RUBAGA</span></p>
+    <a class="foot-brand" href="https://www.rotaractrubaga.org" target="_blank" rel="noopener" aria-label="Rotaract Club of Rubaga website (opens in a new tab)">
+      <span class="club-logo"></span>
+    </a>
+  </div>
+</footer>
+<script src="assets/core.js"></script>
+<script src="assets/illustrations.js"></script>
+<script>
+(function(){
+  "use strict";
+  const $ = id => document.getElementById(id);
+  FF.initTheme($("themeBtn"));
+
+  // Coming back from the form service after a successful send
+  if (location.hash === "#sent"){
+    $("formView").hidden = true; $("sentView").hidden = false;
+    if (window.FF_ILLO) $("sentIllo").innerHTML = FF_ILLO.pin;
+  }
+  $("nextUrl").value = location.origin + location.pathname + "#sent";
+
+  $("reqForm").addEventListener("submit", e => {
+    const f = e.target, msg = $("formMsg");
+    const need = [["r-club","the club name"],["r-when","when the club meets"],["r-time","the start time"],["r-venue","the venue"],["r-name","your name"],["r-role","your role"],["r-email","your email"]];
+    const missing = need.filter(([id]) => !$(id).value.trim()).map(([, label]) => label);
+    if (missing.length){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "Please add " + missing.join(", ") + "."; $(need.find(([id]) => !$(id).value.trim())[0]).focus(); return; }
+    if (!$("r-email").checkValidity()){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "That email address doesn't look right."; $("r-email").focus(); return; }
+    if ($("r-map").value.trim() && !/^https?:\/\//i.test($("r-map").value.trim())){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "The map link should start with https://"; $("r-map").focus(); return; }
+    if (!$("r-consent").checked){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "Please tick the box to confirm you're an officer of the club."; $("r-consent").focus(); return; }
+    $("subject").value = "Fellowship Finder: " + $("r-type").value.toLowerCase() + " (" + $("r-club").value.trim() + ")";
+    msg.className = "msg"; msg.textContent = "Sending…"; $("sendBtn").disabled = true;
+  });
+
+  window.addEventListener("pageshow", () => { $("sendBtn").disabled = false; if ($("formMsg").textContent === "Sending…") $("formMsg").textContent = ""; });
+  $("copyMail").addEventListener("click", e => {
+    const b = e.target;
+    try { navigator.clipboard.writeText("info@rotaractrubaga.org").then(() => { b.textContent = "Copied"; setTimeout(() => { b.textContent = "Copy address"; }, 1600); }, () => {}); } catch(err){}
+  });
+})();
+</script>
+</body>
+</html>

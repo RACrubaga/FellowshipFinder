@@ -133,6 +133,8 @@ input:focus,select:focus,textarea:focus{border-color:var(--link); outline:none}
 }
 
 /* Note linking to the user guide (just above the footer) */
+.notes{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px}
+@media (max-width:860px){ .notes{grid-template-columns:minmax(0,1fr)} }
 .guide-note{display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 20px}
 .guide-note p{flex:1 1 280px; margin:0; min-width:0; color:var(--muted); font-size:.92rem}
 .guide-note p strong{color:var(--fg)}
