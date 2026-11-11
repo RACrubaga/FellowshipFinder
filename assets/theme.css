@@ -43,8 +43,7 @@
 [hidden]{display:none!important}
 body{
   margin:0; background:var(--bg); color:var(--fg); font-family:var(--font-body); font-size:15px; line-height:1.5;
-  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
-  padding-block:20px 40px;
+  padding:0;
 }
 img{max-width:100%}
 h1,h2,h3{font-family:var(--font-display); text-wrap:balance; margin:0}
@@ -53,7 +52,11 @@ button,select,input,textarea{font:inherit; color:inherit}
 :focus-visible{outline:2px solid var(--link); outline-offset:2px}
 a{color:var(--link)}
 
-.wrap{max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:20px}
+.wrap{
+  max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:20px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:20px 40px; box-sizing:content-box;
+}
 .label{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600}
 
 /* Buttons */
@@ -105,20 +108,30 @@ input:focus,select:focus,textarea:focus{border-color:var(--link); outline:none}
 .sw{width:9px; height:9px; border-radius:50%; display:inline-block; flex:none}
 .sw.rotary{background:var(--rotary)} .sw.rotaract{background:var(--rotaract)} .sw.me{background:var(--me)}
 
-/* Footer credit */
-footer.credit{
-  margin-top:12px; border-top:1px solid var(--line); padding-top:22px;
-  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:14px 24px;
+/* Footer: always black, in both light and dark mode */
+:root{ --foot-bg:#0E0D0F; --foot-fg:#F3EFF1; --foot-muted:#A7A0A5; --foot-line:#2B282C; --foot-brand:#E2457C; --foot-gold:#F2C35B }
+.site-foot{background:var(--foot-bg); color:var(--foot-fg); padding-bottom:env(safe-area-inset-bottom, 0px)}
+.foot-in{
+  max-width:1180px; margin:0 auto; box-sizing:content-box;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:32px;
+  display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:28px 40px;
 }
-.credit-main{display:flex; align-items:center; gap:16px; flex-wrap:wrap}
+.foot-label{font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; font-weight:600; color:var(--foot-gold)}
+.foot-meet{display:flex; flex-direction:column; gap:10px; min-width:0}
+.foot-dl{margin:0; display:flex; flex-wrap:wrap; gap:10px 32px}
+.foot-dl div{display:flex; flex-direction:column; gap:2px; min-width:0}
+.foot-dl dt{font-size:.75rem; color:var(--foot-muted)}
+.foot-dl dd{margin:0; font-size:1rem; font-weight:600}
+.foot-dl a{color:var(--foot-gold); font-weight:500; text-underline-offset:3px}
+.foot-small{margin:4px 0 0; font-size:.8rem; color:var(--foot-muted)}
+.foot-brand{display:flex; align-items:center; gap:16px; text-decoration:none; border-radius:8px}
+.foot-brand:focus-visible{outline:2px solid var(--foot-gold); outline-offset:6px}
+.foot-brand:hover .club-logo{opacity:.85}
 .club-logo{
-  width:180px; max-width:100%; aspect-ratio:480/167; background:var(--accent);
+  display:block; width:180px; max-width:100%; aspect-ratio:480/167; background:var(--foot-brand);
   -webkit-mask:url("club-logo.png") center/contain no-repeat; mask:url("club-logo.png") center/contain no-repeat;
 }
-.credit-note{margin:0; font-size:.8rem; color:var(--muted); display:flex; flex-direction:column; gap:2px; text-align:left}
-.credit-note a{color:var(--fg); font-weight:600; text-decoration:none; border-bottom:1px solid var(--line)}
-.credit-note a:hover{border-color:var(--fg)}
-
+@media (max-width:600px){ .foot-in{flex-direction:column; align-items:flex-start} }
 
 /* Illustrations */
 .illo{display:block; width:100%; max-width:200px; height:auto; margin:0 auto}
