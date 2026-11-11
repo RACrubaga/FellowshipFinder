@@ -113,7 +113,7 @@ legend{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:v
           <fieldset>
             <legend>Meetings</legend>
             <div class="grid2">
-              <label class="field"><span>When does the club meet? <em>*</em></span><input type="text" name="Meeting day" id="r-when" maxlength="120" required placeholder="e.g. Every Tuesday, or 1st & 3rd Friday"></label>
+              <label class="field"><span>When does the club meet? <em>*</em></span><select name="Meeting day" id="r-when" required><option value="">Choose a day</option><option value="Monday">Monday</option><option value="Tuesday">Tuesday</option><option value="Wednesday">Wednesday</option><option value="Thursday">Thursday</option><option value="Friday">Friday</option><option value="Saturday">Saturday</option><option value="Sunday">Sunday</option></select><small>Meets on certain weeks only, like the 1<sup>st</sup> and 3<sup>rd</sup>? Add that in the notes below.</small></label>
               <label class="field"><span>Start time <em>*</em></span><input type="time" name="Start time" id="r-time" required></label>
             </div>
             <label class="field"><span>Venue <em>*</em></span><input type="text" name="Venue" id="r-venue" maxlength="160" required placeholder="Venue name and area"></label>
