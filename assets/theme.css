@@ -115,10 +115,10 @@ footer.credit{
   width:180px; max-width:100%; aspect-ratio:480/167; background:var(--accent);
   -webkit-mask:url("club-logo.png") center/contain no-repeat; mask:url("club-logo.png") center/contain no-repeat;
 }
-.credit-note{margin:0; font-size:.8rem; color:var(--muted); display:flex; flex-direction:column; gap:2px; text-align:right}
+.credit-note{margin:0; font-size:.8rem; color:var(--muted); display:flex; flex-direction:column; gap:2px; text-align:left}
 .credit-note a{color:var(--fg); font-weight:600; text-decoration:none; border-bottom:1px solid var(--line)}
 .credit-note a:hover{border-color:var(--fg)}
-@media (max-width:600px){ .credit-note{text-align:left} }
+
 
 /* Illustrations */
 .illo{display:block; width:100%; max-width:200px; height:auto; margin:0 auto}
