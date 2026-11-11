@@ -74,7 +74,7 @@ legend{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:v
       <div id="sentView" class="sent" hidden>
         <div id="sentIllo"></div>
         <h2>Thanks, your request is on its way</h2>
-        <p>The Rotaract Club of Rubaga team will check the details and reply to the email address you gave, usually within a week.</p>
+        <p>The Rotaract Club of Rubaga team will check the details and add your club to Fellowship Finder, usually within a week.</p>
         <a class="btn" href="index.html">Back to Fellowship Finder</a>
       </div>
 
@@ -118,23 +118,13 @@ legend{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:v
             </div>
             <label class="field"><span>Venue <em>*</em></span><input type="text" name="Venue" id="r-venue" maxlength="160" required placeholder="Venue name and area"></label>
             <label class="field"><span>Google Maps link to the venue</span><input type="url" name="Venue map link" id="r-map" maxlength="300" placeholder="https://maps.app.goo.gl/…"><small>In Google Maps, open the venue, tap Share and copy the link.</small></label>
-            <label class="field"><span>Anything else we should know?</span><textarea name="Notes" id="r-notes" maxlength="1000" placeholder="Online meetings, changes coming up, a public WhatsApp number for the club…"></textarea></label>
+            <label class="field"><span>Anything else we should know?</span><textarea name="Notes" id="r-notes" maxlength="1000" placeholder="Online meetings, changes coming up, a public WhatsApp number or email for the club…"></textarea></label>
           </fieldset>
 
-          <fieldset>
-            <legend>You</legend>
-            <div class="grid2">
-              <label class="field"><span>Your name <em>*</em></span><input type="text" name="Your name" id="r-name" maxlength="80" required autocomplete="name"></label>
-              <label class="field"><span>Your role in the club <em>*</em></span><input type="text" name="Your role" id="r-role" maxlength="80" required placeholder="e.g. Secretary"></label>
-              <label class="field"><span>Your email <em>*</em></span><input type="email" name="email" id="r-email" maxlength="120" required autocomplete="email"><small>We'll reply here.</small></label>
-              <label class="field"><span>Phone or WhatsApp</span><input type="tel" name="Phone" id="r-phone" maxlength="20" autocomplete="tel"></label>
-            </div>
-            <label class="check"><input type="checkbox" id="r-consent" name="Consent" value="Confirmed: officer of this club and agrees to share these details" required><span>I'm an officer of this club, and I agree to share these details with the Rotaract Club of Rubaga so it can list the club on Fellowship Finder. <em style="font-style:normal; color:var(--accent)">*</em></span></label>
-          </fieldset>
 
           <p class="msg" id="formMsg" aria-live="polite"></p>
           <div><button class="btn" type="submit" id="sendBtn">Send request</button></div>
-          <p class="fine">Your request is emailed to the Rotaract Club of Rubaga through FormSubmit, a form-forwarding service. After you press Send you may be asked to tick an "I'm not a robot" box. Only the club name, meeting time and venue are shown publicly; your own contact details are used only to reply to you.</p>
+          <p class="fine">Your request is emailed to the Rotaract Club of Rubaga through FormSubmit, a form-forwarding service. After you press Send you may be asked to tick an "I'm not a robot" box. Only the club name, meeting time and venue are shown publicly.</p>
         </form>
       </div>
     </section>
@@ -145,7 +135,7 @@ legend{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:v
         <ol>
           <li>We check the details with your club.</li>
           <li>We add the club and its meetings to Fellowship Finder.</li>
-          <li>We email you when it's live, usually within a week.</li>
+          <li>Your club appears on Fellowship Finder, usually within a week.</li>
         </ol>
       </section>
       <section class="card">
@@ -185,12 +175,10 @@ legend{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:v
 
   $("reqForm").addEventListener("submit", e => {
     const f = e.target, msg = $("formMsg");
-    const need = [["r-club","the club name"],["r-when","when the club meets"],["r-time","the start time"],["r-venue","the venue"],["r-name","your name"],["r-role","your role"],["r-email","your email"]];
+    const need = [["r-club","the club name"],["r-when","when the club meets"],["r-time","the start time"],["r-venue","the venue"]];
     const missing = need.filter(([id]) => !$(id).value.trim()).map(([, label]) => label);
     if (missing.length){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "Please add " + missing.join(", ") + "."; $(need.find(([id]) => !$(id).value.trim())[0]).focus(); return; }
-    if (!$("r-email").checkValidity()){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "That email address doesn't look right."; $("r-email").focus(); return; }
     if ($("r-map").value.trim() && !/^https?:\/\//i.test($("r-map").value.trim())){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "The map link should start with https://"; $("r-map").focus(); return; }
-    if (!$("r-consent").checked){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "Please tick the box to confirm you're an officer of the club."; $("r-consent").focus(); return; }
     $("subject").value = "Fellowship Finder: " + $("r-type").value.toLowerCase() + " (" + $("r-club").value.trim() + ")";
     msg.className = "msg"; msg.textContent = "Sending…"; $("sendBtn").disabled = true;
   });
