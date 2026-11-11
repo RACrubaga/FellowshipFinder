@@ -5,6 +5,7 @@
   --accent:#D22163; --accent-fg:#FFFFFF; --accent-soft:#FBE1EB;
   --btn:#D22163; --btn-fg:#FFFFFF; --link:#D22163; --rel:#D22163; --hot:#D22163; --me:#D22163;
   --rotary:#2650B8; --rotaract:#D22163;
+  --gold:#D9A21B; --gold-soft:#F8E7BC; --tile-filter:none;
   --warn:#8A5000; --warn-bg:#FFF0D6; --bad:#B42318; --bad-bg:#FDE7E4; --ok:#1F7A4A; --ok-bg:#E2F4E9;
   --font-display:"Google Sans","Google Sans Flex","Segoe UI",system-ui,sans-serif;
   --font-body:"Google Sans","Google Sans Flex",system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -19,7 +20,7 @@
 
     --btn:#C8346C; --btn-fg:#FFFFFF; --link:#F2C35B; --rel:#F2C35B; --hot:#F2C35B; --me:#F2C35B;
 
-    --rotary:#93AEF7; --rotaract:#EC6A9A;
+    --rotary:#93AEF7; --rotaract:#EC6A9A; --gold:#F2C35B; --gold-soft:#4A4029; --tile-filter:brightness(.78) contrast(1.08) saturate(.75);
 
     --warn:#F0C674; --warn-bg:#3E3626; --bad:#FF948A; --bad-bg:#46292A; --ok:#71D6A2; --ok-bg:#25392F;
     color-scheme:dark;
@@ -32,7 +33,7 @@
 
   --btn:#C8346C; --btn-fg:#FFFFFF; --link:#F2C35B; --rel:#F2C35B; --hot:#F2C35B; --me:#F2C35B;
 
-  --rotary:#93AEF7; --rotaract:#EC6A9A;
+  --rotary:#93AEF7; --rotaract:#EC6A9A; --gold:#F2C35B; --gold-soft:#4A4029; --tile-filter:brightness(.78) contrast(1.08) saturate(.75);
 
   --warn:#F0C674; --warn-bg:#3E3626; --bad:#FF948A; --bad-bg:#46292A; --ok:#71D6A2; --ok-bg:#25392F;
   color-scheme:dark;
@@ -118,5 +119,21 @@ footer.credit{
 .credit-note a{color:var(--fg); font-weight:600; text-decoration:none; border-bottom:1px solid var(--line)}
 .credit-note a:hover{border-color:var(--fg)}
 @media (max-width:600px){ .credit-note{text-align:left} }
+
+/* Illustrations */
+.illo{display:block; width:100%; max-width:200px; height:auto; margin:0 auto}
+.illo-sm{max-width:96px}
+.illo .i-main{fill:var(--accent)}
+.illo .i-gold{fill:var(--gold)}
+.illo .i-gold-soft{fill:var(--gold-soft)}
+.illo .i-soft{fill:var(--sunk)}
+.illo .i-surface{fill:var(--surface)}
+.illo .i-shadow{fill:var(--sunk)}
+.illo .i-line{stroke:var(--line); stroke-width:2}
+.illo .i-stroke{fill:none; stroke:var(--muted); stroke-width:3; stroke-linecap:round; stroke-linejoin:round}
+.illo .i-stroke-strong{fill:none; stroke:var(--accent); stroke-width:7; stroke-linecap:round}
+.illo .i-ring{fill:none; stroke:var(--gold); stroke-width:3; transform-origin:60px 92px; animation:ff-ring 1.8s ease-out infinite}
+.illo .i-ring2{animation-delay:.9s}
+@keyframes ff-ring{from{transform:scale(.6); opacity:.9} to{transform:scale(3); opacity:0}}
 
 @media (prefers-reduced-motion: reduce){ *{transition:none!important; scroll-behavior:auto!important; animation:none!important} }

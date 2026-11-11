@@ -12,6 +12,13 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500&display=swap">
 <link rel="stylesheet" href="assets/theme.css">
+<link rel="stylesheet" href="assets/vendor/leaflet/leaflet.css">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#D22163">
+<meta name="apple-mobile-web-app-title" content="Fellowships">
 <style>
 /* Layout: two-pane locator. Left: location controls + distance radar (sticky on wide screens). Right: meeting list with ticket-style date stubs. */
 header.top{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:6px 16px}
@@ -21,6 +28,7 @@ header.top{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:s
 .loc-prompt{display:flex; flex-wrap:wrap; align-items:center; gap:10px 16px; padding:14px 16px; border-radius:12px; border:1px solid var(--line); background:var(--surface)}
 .loc-prompt.denied{background:var(--warn-bg); border-color:transparent; color:var(--warn)}
 .loc-prompt .lp-text{flex:1 1 260px; min-width:0; font-size:.9rem}
+.loc-prompt .illo{flex:none; width:64px; margin:0}
 .loc-prompt .lp-text strong{display:block; font-size:1rem; color:var(--fg)}
 .loc-prompt.denied .lp-text strong{color:var(--warn)}
 .empty .row{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:12px}
@@ -38,7 +46,26 @@ header.top h1 span{color:var(--accent)}
 .status{font-size:.82rem; color:var(--muted); margin:0}
 .status.err{color:var(--warn)}
 
-.radar-box{display:flex; flex-direction:column; gap:8px}
+.radar-box{display:flex; flex-direction:column; gap:10px}
+.map{height:300px; border-radius:10px; border:1px solid var(--line); background:var(--sunk); z-index:0}
+.map .leaflet-tile-pane{filter:var(--tile-filter)}
+.map .leaflet-control-attribution{font-size:10px}
+@media (max-width:860px){ .map{height:260px} }
+.hills{height:clamp(64px, 9.6vw, 114px); margin:-4px 0 -6px; pointer-events:none; overflow:hidden}
+.hills-svg{display:block; width:100%; height:100%}
+.hills .h-back{fill:var(--accent-soft)}
+.hills .h-front{fill:var(--sunk)}
+.hills .h-route{fill:none; stroke:var(--gold); stroke-width:2; stroke-dasharray:1 7; stroke-linecap:round}
+.hills .h-pin-c{fill:var(--accent)}
+.hills .h-pin-g{fill:var(--gold)}
+.hills .h-dot{fill:var(--surface)}
+.hills text{font-family:var(--font-mono); font-size:11px; fill:var(--muted); text-anchor:middle}
+@media (max-width:700px){ .hills text{font-size:19px} }
+.suggest{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:14px}
+.suggest .btn{white-space:normal; text-align:center; min-height:40px}
+.nearest{margin:14px auto 0; max-width:46ch; font-size:.9rem}
+.nearest a{font-weight:600}
+.empty .nearest strong{display:inline; font-size:inherit; font-family:inherit; margin:0}
 .radar{width:100%; max-width:320px; aspect-ratio:1; margin:0 auto; display:block}
 .radar text{font-family:var(--font-mono); font-size:9px; fill:var(--muted)}
 .radar .ring{fill:none; stroke:var(--line)}
@@ -93,6 +120,7 @@ header.top h1 span{color:var(--accent)}
 .actions .btn{min-height:34px; font-size:.84rem}
 .copy-fallback{font-family:var(--font-mono); font-size:.78rem; white-space:pre-wrap; background:var(--sunk); padding:8px; border-radius:6px; user-select:all; margin:0; overflow-x:auto}
 .empty{background:var(--surface); border:1px dashed var(--line); border-radius:12px; padding:28px 20px; text-align:center; color:var(--muted)}
+.empty .illo{margin-bottom:10px}
 .empty strong{display:block; color:var(--fg); font-family:var(--font-display); font-size:1.1rem; margin-bottom:4px}
 @media (max-width:420px){ .club{grid-template-columns:62px minmax(0,1fr)} .stub .dn{font-size:1.5rem} }
 </style>
@@ -107,6 +135,7 @@ header.top h1 span{color:var(--accent)}
     </div>
     <p class="tagline">Rotary and Rotaract meetings near you, with the next date, time and venue. Rotary District 9214.</p>
   </header>
+  <div class="hills" id="hills" aria-hidden="true"></div>
   <div class="sample-note" id="dataNote" role="note" hidden></div>
   <div class="loc-prompt" id="locPrompt" role="status" hidden></div>
 
@@ -124,7 +153,9 @@ header.top h1 span{color:var(--accent)}
       <div class="field"><span class="label" id="lblType">Club type</span><div class="seg" id="type" role="group" aria-labelledby="lblType"></div></div>
       <div class="field"><label class="label" id="lblWhen" for="when">When</label><select id="when"></select></div>
       <div class="radar-box">
-        <svg class="radar" id="radar" viewBox="0 0 320 320" role="img" aria-label="Map of clubs around your location"></svg>
+        <div class="seg" id="view" role="group" aria-label="Map or radar view"></div>
+        <div class="map" id="map" role="region" aria-label="Street map of clubs near you"></div>
+        <svg class="radar" id="radar" viewBox="0 0 320 320" role="img" aria-label="Distance radar of clubs around your location" hidden></svg>
         <div class="legend"><span><i class="sw me"></i>You</span><span><i class="sw rotaract"></i>Rotaract</span><span><i class="sw rotary"></i>Rotary</span></div>
       </div>
       <p class="privacy">Your location stays on this device. It is used only to measure distances and is never sent or stored.</p>
@@ -135,7 +166,7 @@ header.top h1 span{color:var(--accent)}
         <h2 id="count">Loading clubs…</h2>
         <div class="seg" id="sort" role="group" aria-label="Sort by"></div>
       </div>
-      <div class="list" id="list"><div class="empty"><strong>Loading clubs…</strong>Fetching the latest meeting times.</div></div>
+      <div class="list" id="list"></div>
     </main>
   </div>
 
@@ -150,7 +181,9 @@ header.top h1 span{color:var(--accent)}
 
 <script src="assets/config.js"></script>
 <script src="assets/vendor/supabase.js"></script>
+<script src="assets/vendor/leaflet/leaflet.js"></script>
 <script src="assets/core.js"></script>
+<script src="assets/illustrations.js"></script>
 <script src="assets/demo-data.js"></script>
 <script>
 (function(){
@@ -252,21 +285,22 @@ header.top h1 span{color:var(--accent)}
     const el = $("locPrompt");
     if (kind === "hidden"){ el.hidden = true; return; }
     el.hidden = false; el.className = "loc-prompt" + (kind === "denied" || kind === "unsupported" ? " denied" : "");
+    const ill = window.FF_ILLO ? (kind === "denied" || kind === "unsupported" ? FF_ILLO.pinOff : FF_ILLO.pin) : "";
     if (kind === "asking"){
-      el.innerHTML = '<div class="lp-text"><strong>Allow location to see clubs near you</strong>Tap <b>Allow</b> when your browser asks. Your location stays on this device.</div>';
+      el.innerHTML = ill + '<div class="lp-text"><strong>Allow location to see clubs near you</strong>Tap <b>Allow</b> when your browser asks. Your location stays on this device.</div>';
     } else if (kind === "denied"){
       const how = isIOS()
         ? "On iPhone: open <b>Settings → Privacy &amp; Security → Location Services</b>, make sure it's on and your browser is set to <b>While Using</b>. In Safari you can also tap <b>aA</b> in the address bar → <b>Website Settings → Location → Allow</b>."
         : "Tap the <b>lock or settings icon</b> next to the web address, open <b>Permissions</b> or <b>Site settings</b>, and set <b>Location</b> to <b>Allow</b>. Also check your phone's location (GPS) is switched on.";
-      el.innerHTML = '<div class="lp-text"><strong>Turn on location to see clubs near you</strong>' + how + ' Then tap <b>Try again</b>. Until then, clubs around ' + esc(areaSel.value) + ' are shown; you can also choose another area under Your location.</div>' +
+      el.innerHTML = ill + '<div class="lp-text"><strong>Turn on location to see clubs near you</strong>' + how + ' Then tap <b>Try again</b>. Until then, clubs around ' + esc(areaSel.value) + ' are shown; you can also choose another area under Your location.</div>' +
         '<button class="btn" type="button" id="lpRetry">Try again</button>';
       $("lpRetry").addEventListener("click", () => locate(true));
     } else if (kind === "unavailable"){
-      el.innerHTML = '<div class="lp-text"><strong>We couldn\'t find your location</strong>Check that your phone\'s location (GPS) is on and you have signal, then try again. Clubs around ' + esc(areaSel.value) + ' are shown for now.</div>' +
+      el.innerHTML = ill + '<div class="lp-text"><strong>We couldn\'t find your location</strong>Check that your phone\'s location (GPS) is on and you have signal, then try again. Clubs around ' + esc(areaSel.value) + ' are shown for now.</div>' +
         '<button class="btn" type="button" id="lpRetry">Try again</button>';
       $("lpRetry").addEventListener("click", () => locate(true));
     } else if (kind === "unsupported"){
-      el.innerHTML = '<div class="lp-text"><strong>This browser can\'t share your location</strong>Pick your area on the left to see nearby clubs.</div>';
+      el.innerHTML = ill + '<div class="lp-text"><strong>This browser can\'t share your location</strong>Pick your area on the left to see nearby clubs.</div>';
     }
   }
   function locate(fromUser){
@@ -295,19 +329,21 @@ header.top h1 span{color:var(--accent)}
   } catch(e){}
 
   // ---------- Results ----------
-  function compute(){
+  // Results for the current filters, or for "what if" overrides (used by the suggestions)
+  function compute(over){
+    const o = Object.assign({radius:state.radius, when:state.when, type:state.type, sort:state.sort}, over || {});
     const t0 = F.todayMs(), byClub = {};
     data.meetings.forEach(m => {
       if (m.mode === "online" || m.lat == null) return;
       const club = data.clubs[m.club_id];
-      if (!club || (state.type !== "all" && club.type !== state.type)) return;
+      if (!club || (o.type !== "all" && club.type !== o.type)) return;
       const dist = F.haversine(state.here, m);
-      if (dist > state.radius) return;
+      if (dist > o.radius) return;
       const occ = F.occurrences(m, data.changes[m.id] || []);
       let next = occ.find(o => !o.cancelled) || null;
       let cancelledBefore = occ.find(o => o.cancelled && (!next || o.start < next.start)) || null;
-      if (/^d\d$/.test(state.when)){
-        const target = t0 + (+state.when.slice(1))*DAY;
+      if (/^d\d$/.test(o.when)){
+        const target = t0 + (+o.when.slice(1))*DAY;
         const onDay = occ.find(o => !o.cancelled && o.day === target);
         if (onDay){ next = onDay; cancelledBefore = null; }
         else {
@@ -317,14 +353,14 @@ header.top h1 span{color:var(--accent)}
           cancelledBefore = cancelled; next = occ.find(o => !o.cancelled && o.start > cancelled.start) || null;
         }
       }
-      if (state.when === "week" && !(next && next.day < t0 + 7*DAY)) return;
+      if (o.when === "week" && !(next && next.day < t0 + 7*DAY)) return;
       const item = {club, meeting:m, dist, next, cancelledBefore};
       const cur = byClub[club.id];
-      const key = x => state.sort === "nearest" ? x.dist : (x.next ? x.next.start : 9e15);
+      const key = x => o.sort === "nearest" ? x.dist : (x.next ? x.next.start : 9e15);
       if (!cur || key(item) < key(cur)) byClub[club.id] = item;
     });
     const items = Object.values(byClub);
-    items.sort((a,b) => state.sort === "nearest" ? a.dist - b.dist : ((a.next ? a.next.start : 9e15) - (b.next ? b.next.start : 9e15)) || a.dist - b.dist);
+    items.sort((a,b) => o.sort === "nearest" ? a.dist - b.dist : ((a.next ? a.next.start : 9e15) - (b.next ? b.next.start : 9e15)) || a.dist - b.dist);
     return items;
   }
   function relLabel(o){
@@ -411,10 +447,88 @@ header.top h1 span{color:var(--accent)}
       g.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " "){ e.preventDefault(); focusCard(id); } });
     });
   }
+  // ---------- Suggestions when nothing matches ----------
+  function whenPhrase(w){ if (/^d\d$/.test(w)){ const d = +w.slice(1); return d < 2 ? dayWord(d) : "on " + dayWord(d); } return w === "week" ? "in the next 7 days" : ""; }
+  const plural = (n, word) => n + " " + word + (n === 1 ? "" : "s");
+  function emptyHtml(){
+    const ill = window.FF_ILLO ? FF_ILLO.empty : "";
+    const wp = whenPhrase(state.when);
+    const typeWord = {all:"clubs", rotary:"Rotary clubs", rotaract:"Rotaract clubs"}[state.type];
+    const head = "No " + typeWord + (wp ? " meet " + wp : "") + " within " + state.radius + " km";
+    const opts = [];
+    let prev = 0;
+    [5, 10, 15].filter(r => r > state.radius).forEach(r => {          // wider, same day: only if it adds clubs
+      const n = compute({radius:r}).length;
+      if (n > prev){ opts.push({set:{radius:r}, label: plural(n, "club") + " within " + r + " km" + (wp ? " " + wp : "")}); prev = n; }
+    });
+    if (state.when !== "week" && state.when !== "any"){              // same distance, later this week
+      const n = compute({when:"week"}).length;
+      if (n) opts.push({set:{when:"week"}, label: plural(n, "club") + " within " + state.radius + " km in the next 7 days"});
+    }
+    if (state.type !== "all"){                                       // other club type
+      const n = compute({type:"all"}).length;
+      if (n) opts.push({set:{type:"all"}, label: "Include all club types (" + plural(n, "club") + ")"});
+    }
+    let body;
+    if (opts.length){
+      body = '<p style="margin:6px 0 0">Here\'s what\'s nearby:</p><div class="suggest">' +
+        opts.map((x, i) => '<button class="btn' + (i ? ' ghost' : '') + '" type="button" data-sug="' + i + '">' + esc(x.label) + '</button>').join("") + '</div>';
+    } else {
+      const near = compute({radius:1e5, when:"any", sort:"nearest"})[0];
+      body = near ? '<p class="nearest">Nothing within 15 km either. The nearest is <strong>' + esc(near.club.name) + '</strong>, ' + F.fmtKm(near.dist) + ' away' +
+        (near.next ? ', next meeting ' + F.fmtDayHtml(near.next.day) + ' at ' + F.fmtTime(near.next.time) : '') +
+        '. <a href="' + F.directionsUrl(near.meeting.lat, near.meeting.lng) + '" target="_blank" rel="noopener">Get directions</a></p>'
+        : '<p class="nearest">No clubs are listed yet. Check back soon.</p>';
+    }
+    emptyOpts = opts;
+    return '<div class="empty">' + ill + '<strong>' + head + '</strong>' + body + '</div>';
+  }
+  let emptyOpts = [];
+  function applySuggestion(i){
+    const x = emptyOpts[i]; if (!x) return;
+    if (x.set.radius) setSeg("radius", "radius", x.set.radius);
+    if (x.set.when){ state.when = x.set.when; $("when").value = x.set.when; }
+    if (x.set.type) setSeg("type", "type", x.set.type);
+    render();
+  }
+
+  // ---------- Street map ----------
+  let map = null, mapLayer = null, markers = {}, mapFitKey = "";
+  const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  function ensureMap(){
+    if (map || !window.L) return map;
+    map = L.map("map", {scrollWheelZoom:false, zoomControl:true}).setView([0.3136, 32.5811], 12);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {maxZoom:19, attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'}).addTo(map);
+    mapLayer = L.layerGroup().addTo(map);
+    return map;
+  }
+  function drawMap(items){
+    if (state.view !== "map" || !ensureMap()) return;
+    mapLayer.clearLayers(); markers = {};
+    const here = [state.here.lat, state.here.lng];
+    const ring = L.circle(here, {radius: state.radius*1000, color: cssVar("--accent"), weight: 1.5, dashArray: "4 6", fillColor: cssVar("--accent"), fillOpacity: .05, interactive: false}).addTo(mapLayer);
+    L.circleMarker(here, {radius: 9, color: "#fff", weight: 3, fillColor: cssVar("--gold"), fillOpacity: 1}).bindTooltip("You are here").addTo(mapLayer);
+    items.forEach(it => {
+      const id = it.club.id, lat = it.next && it.next.lat != null ? it.next.lat : it.meeting.lat, lng = it.next && it.next.lng != null ? it.next.lng : it.meeting.lng;
+      const mk = L.circleMarker([lat, lng], {radius: 8, color: cssVar("--surface"), weight: 2, fillColor: cssVar(it.club.type === "rotary" ? "--rotary" : "--rotaract"), fillOpacity: 1})
+        .bindTooltip(it.club.name).on("click", () => focusCard(id)).addTo(mapLayer);
+      markers[id] = mk;
+    });
+    const key = here.join(",") + "|" + state.radius;
+    if (key !== mapFitKey){ map.fitBounds(ring.getBounds(), {padding:[8, 8]}); mapFitKey = key; }
+  }
+  function setView(v){
+    state.view = v; F.store.set("view", v);
+    $("map").hidden = v !== "map"; $("radar").hidden = v !== "radar";
+    if (v === "map" && ensureMap()){ setTimeout(() => { map.invalidateSize(); mapFitKey = ""; render(); }, 0); }
+  }
+
   function setHot(id){
     state.hot = id;
     document.querySelectorAll(".club.hot").forEach(el => el.classList.remove("hot"));
     document.querySelectorAll(".radar .dot").forEach(el => el.classList.toggle("hot", el.getAttribute("data-id") === id));
+    Object.keys(markers).forEach(k => markers[k].setStyle(k === id ? {weight: 4, color: cssVar("--fg"), radius: 11} : {weight: 2, color: cssVar("--surface"), radius: 8}));
+    if (id && markers[id]) markers[id].bringToFront();
     const card = id && document.getElementById("card-" + id); if (card) card.classList.add("hot");
   }
   function focusCard(id){
@@ -436,22 +550,23 @@ header.top h1 span{color:var(--accent)}
     const whenTxt = dOff !== null ? " meeting " + (dOff < 2 ? dayWord(dOff) : "on " + dayWord(dOff)) : {any:"", week:" meeting in the next 7 days"}[state.when];
     const typeTxt = {all:"clubs", rotary:"Rotary clubs", rotaract:"Rotaract clubs"}[state.type];
     $("count").textContent = items.length + " " + (items.length === 1 ? typeTxt.replace(/s$/, "") : typeTxt) + whenTxt + " within " + state.radius + " km";
-    let emptyMsg = '<div class="empty"><strong>No clubs match yet</strong>Try a wider distance, another day, or a different area.</div>';
-    if (dOff !== null) emptyMsg = '<div class="empty"><strong>No clubs meet ' + (dOff < 2 ? dayWord(dOff) : "on " + dayWord(dOff)) + ' within ' + state.radius + ' km</strong>See which clubs meet on other days this week, or search a wider area.' +
-      '<div class="row"><button class="btn" type="button" data-empty="week">Show the next 7 days</button>' + (state.radius < 15 ? '<button class="btn ghost" type="button" data-empty="wider">Search within ' + (state.radius < 10 ? 10 : 15) + ' km</button>' : '') + '</div></div>';
-    $("list").innerHTML = items.length ? items.map(card).join("") : emptyMsg;
-    $("list").querySelectorAll("[data-empty]").forEach(b => b.addEventListener("click", () => {
-      if (b.dataset.empty === "week"){ state.when = "week"; $("when").value = "week"; }
-      else setSeg("radius", "radius", state.radius < 10 ? 10 : 15);
-      render();
-    }));
+    $("list").innerHTML = items.length ? items.map(card).join("") : emptyHtml();
+    $("list").querySelectorAll("[data-sug]").forEach(b => b.addEventListener("click", () => applySuggestion(+b.dataset.sug)));
     drawRadar(items);
+    drawMap(items);
     document.querySelectorAll(".club").forEach(c => {
       c.addEventListener("mouseenter", () => setHot(c.dataset.id));
       c.addEventListener("mouseleave", () => setHot(null));
     });
   }
 
+  if (window.FF_ILLO){ $("hills").innerHTML = FF_ILLO.hills; }
+  $("list").innerHTML = '<div class="empty">' + (window.FF_ILLO ? FF_ILLO.loading : "") + '<strong>Finding fellowships near you…</strong>Fetching the latest meeting times.</div>';
+  state.view = window.L ? F.store.get("view", "map") : "radar";
+  if (window.L) seg($("view"), "view", [["map","Map"],["radar","Radar"]], v => setView(v)); else $("view").hidden = true;
+  setView(state.view);
+  // Re-colour map pins when light/dark mode changes
+  new MutationObserver(() => { if (state.loaded) render(); }).observe(document.documentElement, {attributes:true, attributeFilter:["data-theme"]});
   setArea(F.store.get("area", "Kampala Central"));
   drawRadar([]);
   locate(false);
