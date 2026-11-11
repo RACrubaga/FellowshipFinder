@@ -165,7 +165,7 @@ header.top h1 span{color:var(--accent)}
     ["Nansana", 0.3640, 32.5280], ["Entebbe", 0.0512, 32.4637], ["Mukono", 0.3533, 32.7553]
   ];
   const MODE = {in_person:"In person", hybrid:"In person + online", online:"Online"};
-  const state = { here:null, radius:F.store.get("radius", 10), type:"all", when:"d0", manual:false, located:false, sort:"soonest", hot:null, loaded:false, error:null };
+  const state = { here:null, radius:5, type:"all", when:"d0", manual:false, located:false, sort:"soonest", hot:null, loaded:false, error:null };
   const data = { clubs:{}, meetings:[], changes:{} };
 
   // ---------- Load data ----------
@@ -223,7 +223,7 @@ header.top h1 span{color:var(--accent)}
       el.appendChild(b);
     });
   }
-  seg($("radius"), "radius", [[2,"2 km"],[5,"5 km"],[10,"10 km"],[25,"25 km"]], v => F.store.set("radius", +v));
+  seg($("radius"), "radius", [[2,"2 km"],[5,"5 km"],[10,"10 km"],[15,"15 km"]]);
   seg($("type"), "type", [["all","All"],["rotaract","Rotaract"],["rotary","Rotary"]]);
   // "When": today by default, any of the next 7 days, or wider
   let whenBuiltFor = null;
@@ -438,11 +438,11 @@ header.top h1 span{color:var(--accent)}
     $("count").textContent = items.length + " " + (items.length === 1 ? typeTxt.replace(/s$/, "") : typeTxt) + whenTxt + " within " + state.radius + " km";
     let emptyMsg = '<div class="empty"><strong>No clubs match yet</strong>Try a wider distance, another day, or a different area.</div>';
     if (dOff !== null) emptyMsg = '<div class="empty"><strong>No clubs meet ' + (dOff < 2 ? dayWord(dOff) : "on " + dayWord(dOff)) + ' within ' + state.radius + ' km</strong>See which clubs meet on other days this week, or search a wider area.' +
-      '<div class="row"><button class="btn" type="button" data-empty="week">Show the next 7 days</button>' + (state.radius < 25 ? '<button class="btn ghost" type="button" data-empty="wider">Search within 25 km</button>' : '') + '</div></div>';
+      '<div class="row"><button class="btn" type="button" data-empty="week">Show the next 7 days</button>' + (state.radius < 15 ? '<button class="btn ghost" type="button" data-empty="wider">Search within ' + (state.radius < 10 ? 10 : 15) + ' km</button>' : '') + '</div></div>';
     $("list").innerHTML = items.length ? items.map(card).join("") : emptyMsg;
     $("list").querySelectorAll("[data-empty]").forEach(b => b.addEventListener("click", () => {
       if (b.dataset.empty === "week"){ state.when = "week"; $("when").value = "week"; }
-      else { setSeg("radius", "radius", 25); F.store.set("radius", 25); }
+      else setSeg("radius", "radius", state.radius < 10 ? 10 : 15);
       render();
     }));
     drawRadar(items);
