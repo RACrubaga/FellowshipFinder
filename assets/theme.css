@@ -132,6 +132,12 @@ input:focus,select:focus,textarea:focus{border-color:var(--link); outline:none}
   -webkit-mask:url("club-logo.png") center/contain no-repeat; mask:url("club-logo.png") center/contain no-repeat;
 }
 
+/* Note linking to the user guide (just above the footer) */
+.guide-note{display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px; background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 20px}
+.guide-note p{flex:1 1 280px; margin:0; min-width:0; color:var(--muted); font-size:.92rem}
+.guide-note p strong{color:var(--fg)}
+.guide-ico{flex:none; width:28px; height:28px; fill:none; stroke:var(--accent); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+
 /* Illustrations */
 .illo{display:block; width:100%; max-width:200px; height:auto; margin:0 auto}
 .illo-sm{max-width:96px}

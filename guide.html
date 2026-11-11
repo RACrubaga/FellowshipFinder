@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="description" content="How to use Fellowship Finder: find a fellowship near you, and keep your club's meetings up to date.">
+<title>Fellowship Finder Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/theme.css">
+<link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/icons/icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#D22163">
+<style>
+/* Layout: header; then a contents list (sticky on wide screens) beside the guide text. */
+header.top{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:6px 16px}
+header.top h1{font-size:clamp(1.6rem, 3.4vw, 2.4rem); font-weight:700; letter-spacing:-.02em; line-height:1.05}
+header.top h1 span{color:var(--accent)}
+header.top h1 small{font-size:.5em; font-weight:500; color:var(--muted); margin-left:8px; letter-spacing:0}
+.top-actions{display:flex; align-items:center; gap:8px; justify-self:end; flex-wrap:wrap; justify-content:flex-end}
+.tagline{grid-column:1 / -1; margin:0; color:var(--muted); max-width:62ch}
+@media (max-width:520px){ .top-actions .theme-btn span{display:none} .top-actions .theme-btn{padding:0 10px} }
+
+.doc{display:grid; grid-template-columns:minmax(0, 250px) minmax(0, 1fr); gap:28px; align-items:start}
+@media (max-width:860px){ .doc{grid-template-columns:minmax(0,1fr)} }
+.toc{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px}
+@media (min-width:861px){ .toc{position:sticky; top:calc(env(safe-area-inset-top, 0px) + 12px)} }
+.toc ol{margin:8px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:2px}
+.toc a{display:block; padding:6px 8px; border-radius:6px; color:var(--fg); text-decoration:none; font-size:.92rem}
+.toc a:hover{background:var(--sunk)}
+.toc .sub a{padding-left:20px; color:var(--muted); font-size:.86rem}
+
+.content{display:flex; flex-direction:column; gap:22px; min-width:0}
+.sec{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px 24px; scroll-margin-top:16px}
+@media (max-width:520px){ .sec{padding:18px 16px} }
+.sec > h2{font-size:1.35rem; font-weight:700; margin-bottom:4px}
+.sec .who{display:inline-block; margin-bottom:12px}
+.sec h3{font-size:1.05rem; font-weight:700; margin:22px 0 6px; scroll-margin-top:16px}
+.sec p, .sec li{max-width:68ch; line-height:1.6}
+.sec p{margin:6px 0}
+.sec ol, .sec ul{margin:6px 0; padding-left:22px}
+.sec li{margin:4px 0}
+.sec li::marker{color:var(--accent); font-weight:700}
+.tip{margin:12px 0 0; padding:10px 14px; border-radius:8px; background:var(--sunk); font-size:.92rem; max-width:68ch}
+.tip strong{color:var(--fg)}
+.tip.warn{background:var(--warn-bg); color:var(--warn)}
+.tip.warn strong{color:inherit}
+.kbd{font-family:var(--font-mono); font-size:.85em; padding:1px 6px; border-radius:5px; background:var(--sunk); border:1px solid var(--line); white-space:nowrap}
+.legend-list{list-style:none; padding:0 !important}
+.legend-list li{display:flex; gap:10px; align-items:baseline}
+.legend-list .chip{flex:none; font-size:.74rem; padding:2px 8px; border-radius:99px; background:var(--sunk); color:var(--muted); white-space:nowrap}
+.legend-list .chip.stale{background:var(--warn-bg); color:var(--warn)}
+.legend-list .chip.cancel{background:var(--bad-bg); color:var(--bad)}
+.legend-list .chip.moved{background:var(--warn-bg); color:var(--warn)}
+.legend-list .chip.today{background:transparent; color:var(--rel); font-weight:700; padding-left:0}
+.table-wrap{overflow-x:auto; margin-top:10px}
+table{border-collapse:collapse; font-size:.9rem; min-width:480px}
+th,td{text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--muted)}
+code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padding:1px 5px; border-radius:4px; word-break:break-word}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Fellowship <span>Finder</span><small>Guide</small></h1>
+    <div class="top-actions">
+      <a class="btn small" href="index.html">Find fellowships</a>
+      <a class="btn ghost small" href="admin.html">Login</a>
+      <button class="theme-btn" id="themeBtn" type="button"></button>
+    </div>
+    <p class="tagline">Everything you need to find a fellowship near you, and to keep your club's meetings up to date.</p>
+  </header>
+
+  <div class="doc">
+    <nav class="toc" aria-label="Contents">
+      <span class="label">Contents</span>
+      <ol>
+        <li><a href="#find">Finding a fellowship</a></li>
+        <li class="sub"><a href="#location">Sharing your location</a></li>
+        <li class="sub"><a href="#filters">Distance, club type and day</a></li>
+        <li class="sub"><a href="#cards">Reading a club card</a></li>
+        <li class="sub"><a href="#nothing">When nothing shows</a></li>
+        <li class="sub"><a href="#homescreen">Add it to your phone</a></li>
+        <li><a href="#officers">For club officers</a></li>
+        <li class="sub"><a href="#access">Getting access</a></li>
+        <li class="sub"><a href="#register">Registering your club</a></li>
+        <li class="sub"><a href="#meetings">Adding a meeting</a></li>
+        <li class="sub"><a href="#changes">Cancelling or moving a date</a></li>
+        <li class="sub"><a href="#confirm">Keeping details current</a></li>
+        <li><a href="#moderators">For moderators</a></li>
+        <li><a href="#privacy">Privacy</a></li>
+        <li><a href="#faq">Questions</a></li>
+      </ol>
+    </nav>
+
+    <main class="content">
+      <!-- ===================== VISITORS ===================== -->
+      <section class="sec" id="find">
+        <h2>Finding a fellowship</h2>
+        <span class="pill who">For everyone</span>
+        <p>Open Fellowship Finder and it shows Rotaract and Rotary clubs meeting <strong>today</strong> within <strong>5 km</strong> of you, soonest first. Each club shows its next meeting date, time and venue, with directions one tap away.</p>
+
+        <h3 id="location">Sharing your location</h3>
+        <ol>
+          <li>When the page opens, your browser asks to use your location. Tap <strong>Allow</strong>.</li>
+          <li>Clubs are now measured from where you are. The line under <em>Your location</em> says how accurate it is.</li>
+          <li>Prefer not to share? Choose an area such as Rubaga or Ntinda from the list next to <strong>Use my location</strong>.</li>
+        </ol>
+        <p>If you tapped <strong>Block</strong> earlier, a yellow notice explains how to turn location back on. In short:</p>
+        <ul>
+          <li><strong>Android (Chrome):</strong> tap the icon to the left of the web address, then <strong>Permissions</strong> or <strong>Site settings</strong>, and set <strong>Location</strong> to <strong>Allow</strong>. Make sure your phone's location (GPS) is switched on.</li>
+          <li><strong>iPhone (Safari):</strong> tap <span class="kbd">aA</span> in the address bar, then <strong>Website Settings</strong>, and set <strong>Location</strong> to <strong>Allow</strong>. Also check <strong>Settings → Privacy &amp; Security → Location Services</strong> is on and Safari is set to <strong>While Using</strong>.</li>
+        </ul>
+        <p>Then tap <strong>Try again</strong> on the notice.</p>
+
+        <h3 id="filters">Distance, club type and day</h3>
+        <ul>
+          <li><strong>Distance:</strong> 2, 5, 10 or 15 km from you. The page starts at 5 km.</li>
+          <li><strong>Club type:</strong> All, Rotaract or Rotary.</li>
+          <li><strong>When:</strong> starts on <em>Today</em>. Open the list to pick <em>Tomorrow</em>, any day in the coming week, <em>Any day in the next 7 days</em>, or <em>Any time</em>.</li>
+          <li><strong>Soonest first / Nearest first:</strong> sort the list by meeting time or by distance.</li>
+          <li><strong>Map / Radar:</strong> the map shows clubs as pins on real streets; the radar shows them by distance and direction from you. Tap a pin or dot to jump to that club.</li>
+        </ul>
+
+        <h3 id="cards">Reading a club card</h3>
+        <p>The ticket on the left shows the day, date and start time of the club's next meeting. Next to it:</p>
+        <ul class="legend-list">
+          <li><span class="chip today">Today</span><span>When the meeting is: Today, Tomorrow, This Friday, or In 9 days. <em>Happening now</em> means it has started.</span></li>
+          <li><span class="chip">In person</span><span>How the club meets: in person, in person + online, or online.</span></li>
+          <li><span class="chip">Confirmed 12 days ago</span><span>When the club last checked its details are correct.</span></li>
+          <li><span class="chip stale">Not confirmed for 120 days</span><span>Details may be out of date. Consider contacting the club first.</span></li>
+          <li><span class="chip cancel">Cancelled</span><span>That meeting won't happen; the card shows the reason and the next date.</span></li>
+          <li><span class="chip moved">Changed for this meeting</span><span>The time or venue is different this once.</span></li>
+        </ul>
+        <p>Buttons on each card:</p>
+        <ul>
+          <li><strong>Directions</strong> opens Google Maps with the venue as your destination.</li>
+          <li><strong>WhatsApp</strong> appears only if the club agreed to share its number.</li>
+          <li><strong>Copy details</strong> copies the club name, next meeting, venue and a directions link, ready to paste into a chat.</li>
+        </ul>
+
+        <h3 id="nothing">When nothing shows</h3>
+        <p>If no club meets at the time and distance you chose, the page tells you, then offers only options that actually have clubs, for example <em>2 clubs within 10 km today</em> or <em>3 clubs within 5 km in the next 7 days</em>. Tap one to switch to it. If there is nothing within 15 km, it names the nearest club with its next meeting and directions.</p>
+
+        <h3 id="homescreen">Add it to your phone</h3>
+        <ul>
+          <li><strong>Android (Chrome):</strong> tap the <span class="kbd">⋮</span> menu, then <strong>Add to Home screen</strong> or <strong>Install app</strong>.</li>
+          <li><strong>iPhone (Safari):</strong> tap the <strong>Share</strong> button, then <strong>Add to Home Screen</strong>.</li>
+        </ul>
+        <p>It then opens full-screen from its own icon, like an app.</p>
+        <p class="tip"><strong>Light or dark?</strong> The page opens in light mode. Use the button in the top-right corner to switch; your choice is remembered on that device.</p>
+      </section>
+
+      <!-- ===================== OFFICERS ===================== -->
+      <section class="sec" id="officers">
+        <h2>For club officers</h2>
+        <span class="pill who">Presidents, secretaries and club admins</span>
+        <p>Club officers keep their club's details, meeting times and venue up to date, so members and visitors always find the right place.</p>
+
+        <h3 id="access">Getting access</h3>
+        <ol>
+          <li>Ask the district moderator to invite you. Accounts are by invitation only.</li>
+          <li>Open the invitation email and tap the link. It opens the Fellowship Finder login page, already signed in.</li>
+          <li>Open <strong>My account</strong> (bottom of the club list), enter your name, and set a password of at least 10 characters.</li>
+          <li>Next time, tap <strong>Login</strong> at the top of the public page and sign in with your email and password.</li>
+        </ol>
+        <p class="tip"><strong>Forgot your password?</strong> On the login page enter your email and tap <strong>Forgot password?</strong>, or <strong>Email me a sign-in link</strong> to get in without one. Links work once and expire within an hour.</p>
+
+        <h3 id="register">Registering your club</h3>
+        <ol>
+          <li>Tap <strong>Register a club</strong>.</li>
+          <li>Enter the club name, type and RI club number (from My Rotary), plus area, website, WhatsApp number and club email.</li>
+          <li>Tick the consent box only if the club agrees to show its WhatsApp number and email publicly. Otherwise they stay private.</li>
+          <li>Tap <strong>Save club</strong>. You become its admin straight away.</li>
+        </ol>
+        <p class="tip warn"><strong>Pending until approved.</strong> New clubs are hidden from the public page until a moderator approves them. You can add meetings in the meantime.</p>
+
+        <h3 id="meetings">Adding a meeting</h3>
+        <ol>
+          <li>Open your club, go to the <strong>Meetings</strong> tab and tap <strong>Add a meeting</strong>.</li>
+          <li>Give it a name, such as <em>Fellowship</em> or <em>Board meeting</em>.</li>
+          <li>Choose <strong>How often</strong>:
+            <ul>
+              <li><em>Every week</em>, then the day.</li>
+              <li><em>Every other week</em>, then the day and the date of one upcoming meeting, so the right weeks are used.</li>
+              <li><em>Certain weeks of the month</em>, then the day and which weeks, for example 1<sup>st</sup> and 3<sup>rd</sup>, or Last.</li>
+            </ul>
+          </li>
+          <li>Set the start time, length and format (in person, in person + online, or online only). Check the preview line: it lists the next dates.</li>
+          <li>Enter the venue name and place the map pin. Either tap the map where the venue is (drag the pin to adjust), tap <strong>Use my current location</strong> if you are at the venue, or paste a Google Maps link.</li>
+          <li>Add a directions note if it helps (gate, landmark, floor), then tap <strong>Save meeting</strong>.</li>
+        </ol>
+        <p class="tip"><strong>Getting a Google Maps link:</strong> open the venue in Google Maps, tap <strong>Share</strong>, copy the link, and paste it into the box under the map.</p>
+
+        <h3 id="changes">Cancelling or moving a date</h3>
+        <ol>
+          <li>Open your club and go to <strong>Cancel or move</strong>. It lists the next 10 dates.</li>
+          <li>To cancel: tap <strong>Cancel</strong> next to the date, type a short reason people will see, and confirm.</li>
+          <li>To move: tap <strong>Move</strong>, then set the new date, time and venue if different (you can paste a new map pin), add a reason, and save.</li>
+          <li>Made a mistake? Tap <strong>Undo</strong> next to the date.</li>
+        </ol>
+        <p>Changes show on the public page straight away.</p>
+
+        <h3 id="confirm">Keeping details current</h3>
+        <p>Every month or so, open <strong>Details</strong> and tap <strong>Confirm details and meetings are current</strong>. Visitors see when you last confirmed; clubs not confirmed for over 90 days are flagged as possibly out of date.</p>
+      </section>
+
+      <!-- ===================== MODERATORS ===================== -->
+      <section class="sec" id="moderators">
+        <h2>For moderators</h2>
+        <span class="pill who">District team</span>
+        <ul>
+          <li><strong>Approving clubs:</strong> use the <strong>Pending</strong> filter, open a club, check its details and RI club number, then tap <strong>Approve</strong> or <strong>Reject</strong>. Approved clubs appear publicly straight away.</li>
+          <li><strong>Adding a club admin:</strong> first invite the person from Supabase (<em>Authentication → Users → Invite user</em>). Then open the club, go to <strong>Club admins</strong>, enter their email and tap <strong>Add admin</strong>.</li>
+          <li><strong>Removing access:</strong> tap <strong>Remove</strong> next to their name under <strong>Club admins</strong>.</li>
+          <li><strong>Deleting a club:</strong> open <strong>Details</strong> and use <strong>Delete club</strong> at the bottom. This also removes its meetings and cannot be undone.</li>
+          <li><strong>Making someone a moderator:</strong> in Supabase's SQL Editor run <code>update public.profiles set role = 'moderator' where email = 'name@example.com';</code></li>
+        </ul>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Who</th><th>Can do</th></tr></thead>
+            <tbody>
+              <tr><td>Visitors</td><td>See approved clubs, meetings and cancellations. Contacts only where the club agreed.</td></tr>
+              <tr><td>Club admins</td><td>Register clubs (pending), edit their own clubs, meetings and date changes.</td></tr>
+              <tr><td>Moderators</td><td>Everything, plus approve, reject or delete clubs and assign club admins.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===================== PRIVACY ===================== -->
+      <section class="sec" id="privacy">
+        <h2>Privacy</h2>
+        <ul>
+          <li>Your location never leaves your phone. Distances are worked out on your device and are not sent or stored.</li>
+          <li>A club's WhatsApp number and email are shown only if the club ticked the consent box.</li>
+          <li>Officer accounts hold only an email address and name, used to sign in and to show who manages a club.</li>
+        </ul>
+      </section>
+
+      <!-- ===================== FAQ ===================== -->
+      <section class="sec" id="faq">
+        <h2>Questions</h2>
+        <h3>Why can't I see my club on the public page?</h3>
+        <ul>
+          <li>It is still <strong>Pending</strong> approval, or marked as not active.</li>
+          <li>Its meeting is set to hidden (untick and re-tick <em>Show this meeting on the public page</em>).</li>
+          <li>It doesn't meet on the day chosen under <strong>When</strong>, or it is beyond the distance chosen. Try <em>Any time</em> and 15 km.</li>
+        </ul>
+        <h3>What time zone are meetings in?</h3>
+        <p>Kampala time (East Africa Time).</p>
+        <h3>A club's details look wrong. What should I do?</h3>
+        <p>Check the <em>Confirmed</em> label on its card. If it hasn't been confirmed recently, contact the club before you go, or let a moderator know.</p>
+      </section>
+    </main>
+  </div>
+</div>
+<footer class="site-foot">
+  <div class="foot-in">
+    <p class="foot-head"><span class="foot-label">Powered by:</span> <span class="foot-club">ROTARACT CLUB OF RUBAGA</span></p>
+    <a class="foot-brand" href="https://www.rotaractrubaga.org" target="_blank" rel="noopener" aria-label="Rotaract Club of Rubaga website (opens in a new tab)">
+      <span class="club-logo"></span>
+    </a>
+  </div>
+</footer>
+<script src="assets/core.js"></script>
+<script>FF.initTheme(document.getElementById("themeBtn"));</script>
+</body>
+</html>
