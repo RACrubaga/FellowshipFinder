@@ -1,5 +1,5 @@
 /* Fellowship Finder: shared design tokens and components.
-   Light theme in the Rotaract Club of Rubaga cranberry; dark theme is neutral charcoal with pink kept for brand marks. */
+   Light theme in the Rotaract Club of Rubaga cranberry; dark theme is a soft slate (not near-black) with cranberry buttons and gold highlights. */
 :root{
   --bg:#F8F4F6; --surface:#FFFFFF; --sunk:#F2E8EC; --fg:#24121A; --muted:#6E5A63; --line:#E8D9E0;
   --accent:#D22163; --accent-fg:#FFFFFF; --accent-soft:#FBE1EB;
@@ -13,20 +13,28 @@
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --bg:#121113; --surface:#1B1A1D; --sunk:#242327; --fg:#EFECEF; --muted:#A7A2A9; --line:#333137;
-    --accent:#E6789F; --accent-fg:#1A1719; --accent-soft:#2C2A2F;
-    --btn:#ECE7EA; --btn-fg:#1A181B; --link:#ECE7EA; --rel:#F4F1F3; --hot:#8F8A93; --me:#ECE7EA;
-    --rotary:#8FAAF5; --rotaract:#E6789F;
-    --warn:#F2B35C; --warn-bg:#33260E; --bad:#FF8F85; --bad-bg:#3A1714; --ok:#62D49C; --ok-bg:#12301F;
+    --bg:#23262D; --surface:#2C3038; --sunk:#353A43; --fg:#ECEAE6; --muted:#A9ADB5; --line:#434852;
+
+    --accent:#EC6A9A; --accent-fg:#FFFFFF; --accent-soft:#3F3039;
+
+    --btn:#C8346C; --btn-fg:#FFFFFF; --link:#F2C35B; --rel:#F2C35B; --hot:#F2C35B; --me:#F2C35B;
+
+    --rotary:#93AEF7; --rotaract:#EC6A9A;
+
+    --warn:#F0C674; --warn-bg:#3E3626; --bad:#FF948A; --bad-bg:#46292A; --ok:#71D6A2; --ok-bg:#25392F;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
-  --bg:#121113; --surface:#1B1A1D; --sunk:#242327; --fg:#EFECEF; --muted:#A7A2A9; --line:#333137;
-  --accent:#E6789F; --accent-fg:#1A1719; --accent-soft:#2C2A2F;
-  --btn:#ECE7EA; --btn-fg:#1A181B; --link:#ECE7EA; --rel:#F4F1F3; --hot:#8F8A93; --me:#ECE7EA;
-  --rotary:#8FAAF5; --rotaract:#E6789F;
-  --warn:#F2B35C; --warn-bg:#33260E; --bad:#FF8F85; --bad-bg:#3A1714; --ok:#62D49C; --ok-bg:#12301F;
+  --bg:#23262D; --surface:#2C3038; --sunk:#353A43; --fg:#ECEAE6; --muted:#A9ADB5; --line:#434852;
+
+  --accent:#EC6A9A; --accent-fg:#FFFFFF; --accent-soft:#3F3039;
+
+  --btn:#C8346C; --btn-fg:#FFFFFF; --link:#F2C35B; --rel:#F2C35B; --hot:#F2C35B; --me:#F2C35B;
+
+  --rotary:#93AEF7; --rotaract:#EC6A9A;
+
+  --warn:#F0C674; --warn-bg:#3E3626; --bad:#FF948A; --bad-bg:#46292A; --ok:#71D6A2; --ok-bg:#25392F;
   color-scheme:dark;
 }
 :root{padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
