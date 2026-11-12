@@ -122,8 +122,9 @@
   // Accepts "0.31, 32.58", a Google Maps link with @lat,lng or q=lat,lng, or ?ll=
   function parseCoords(text){
     const t = String(text || "");
-    const m = t.match(/@(-?\d+\.\d+),\s*(-?\d+\.\d+)/) || t.match(/[?&](?:q|ll|query|destination)=(-?\d+\.\d+),\s*(-?\d+\.\d+)/) ||
-              t.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || t.match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/);
+    // Prefer the exact place pin (!3d..!4d..) over the map's centre (@lat,lng)
+    const m = t.match(/!3d(-?\d+\.\d+)!4d(-?\d+\.\d+)/) || t.match(/[?&](?:q|ll|query|destination)=(-?\d+\.\d+)(?:,|%2C)\s*(-?\d+\.\d+)/i) ||
+              t.match(/@(-?\d+\.\d+),\s*(-?\d+\.\d+)/) || t.match(/^\s*(-?\d+(?:\.\d+)?)\s*,\s*(-?\d+(?:\.\d+)?)\s*$/);
     if (!m) return null;
     const lat = +m[1], lng = +m[2];
     if (Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;

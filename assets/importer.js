@@ -149,7 +149,10 @@
       if (!errors.length){
         if (mode !== "online" && !venue) errors.push("Venue is missing");
         else if (mode !== "online" && (lat == null || lng == null)){
-          meetingNote = "Meeting not imported: no map location. Add Latitude and Longitude, or add the meeting in the admin area after importing.";
+          const shortLink = /goo\.gl|maps\.app/i.test(str(get.maps));
+          meetingNote = shortLink
+            ? "Meeting not imported: short Google Maps links (maps.app.goo.gl) can't be read. Open the link in a browser and copy the full address from the address bar, or add Latitude and Longitude."
+            : "Meeting not imported: no map location. Add Latitude and Longitude, or add the meeting in the admin area after importing.";
         } else {
           const lengthMin = Math.round(num(get.length) || 90);
           meeting = {
