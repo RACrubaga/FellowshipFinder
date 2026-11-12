@@ -262,7 +262,7 @@ header.top h1 span{color:var(--accent)}
   }
   seg($("radius"), "radius", [[2,"2 km"],[5,"5 km"],[10,"10 km"],[15,"15 km"]]);
   seg($("type"), "type", [["all","All"],["rotaract","Rotaract"],["rotary","Rotary"]]);
-  seg($("district"), "district", [["all","All"],["9213","D9213"],["9214","D9214"]]);
+  seg($("district"), "district", [["all","All"],["9214","D9214"],["9213","D9213"]]);
   // "When": today by default, any of the next 7 days, or wider
   let whenBuiltFor = null;
   function dayWord(off, cap){ const w = F.WD_LONG[new Date(F.todayMs() + off*DAY).getUTCDay()]; return off === 0 ? (cap ? "Today" : "today") : off === 1 ? (cap ? "Tomorrow" : "tomorrow") : w; }
