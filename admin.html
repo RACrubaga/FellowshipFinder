@@ -54,6 +54,24 @@
 .club-item[aria-current="true"]{background:var(--sunk); border-color:var(--line)}
 .club-item .nm{flex:1; min-width:0; font-weight:500; font-size:.92rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .side-foot{display:flex; flex-wrap:wrap; gap:8px; border-top:1px solid var(--line); padding-top:12px}
+/* Import from Excel */
+.imp-steps{margin:0; padding-left:22px; display:flex; flex-direction:column; gap:14px}
+.imp-steps li::marker{color:var(--accent); font-weight:700}
+.imp-drop{display:flex; align-items:center; justify-content:center; text-align:center; margin-top:8px; min-height:84px; padding:16px; border:2px dashed var(--line); border-radius:10px; background:var(--sunk); color:var(--muted); cursor:pointer; position:relative}
+.imp-drop:hover,.imp-drop.over{border-color:var(--accent); color:var(--fg)}
+.imp-drop input{position:absolute; inset:0; opacity:0; cursor:pointer; width:100%}
+.imp-drop:focus-within{outline:2px solid var(--link); outline-offset:2px}
+.imp-summary{display:flex; flex-wrap:wrap; gap:6px}
+.imp-table-wrap{overflow-x:auto; border:1px solid var(--line); border-radius:10px}
+.imp-table{border-collapse:collapse; width:100%; min-width:640px; font-size:.86rem}
+.imp-table th{position:sticky; top:0; background:var(--sunk); text-align:left; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); padding:8px 10px}
+.imp-table td{padding:8px 10px; border-top:1px solid var(--line); vertical-align:top}
+.imp-table td.n{font-family:var(--font-mono); color:var(--muted); font-variant-numeric:tabular-nums}
+.imp-table small{color:var(--muted)}
+.imp-status{font-weight:600}
+.imp-status.ok{color:var(--ok)} .imp-status.warn{color:var(--warn)} .imp-status.bad{color:var(--bad)}
+.imp-warn{display:block; margin-top:3px}
+.imp-log{margin:0; padding-left:20px; font-size:.9rem; display:flex; flex-direction:column; gap:3px}
 
 .ed-head{display:flex; flex-wrap:wrap; justify-content:space-between; align-items:flex-start; gap:10px}
 .ed-head h2{font-size:1.35rem; font-weight:700}
@@ -136,6 +154,7 @@
       <div class="seg" id="statusFilter" role="group" aria-label="Filter by status" hidden></div>
       <div class="club-list" id="clubList"></div>
       <div class="side-foot">
+        <button class="btn ghost small" type="button" id="importBtn" hidden>Import from Excel</button>
         <button class="btn ghost small" type="button" id="accountBtn">My account</button>
       </div>
     </aside>
@@ -158,6 +177,7 @@
 <script src="assets/vendor/supabase.js"></script>
 <script src="assets/vendor/leaflet/leaflet.js"></script>
 <script src="assets/core.js"></script>
+<script src="assets/importer.js"></script>
 <script>
 (function(){
   "use strict";
@@ -245,6 +265,7 @@
     $("who").hidden = false;
     $("who").innerHTML = esc(S.profile.full_name || S.user.email) + ' <span class="pill">' + (S.isMod ? "Site admin" : "Club admin") + '</span>';
     $("statusFilter").hidden = !S.isMod;
+    $("importBtn").hidden = !S.isMod;
     if (S.isMod) renderStatusFilter();
     await loadClubs();
     if (recovering){ recovering = false; renderAccount(true); } else renderWelcome();
@@ -284,6 +305,15 @@
   $("clubSearch").addEventListener("input", e => { S.q = e.target.value; renderClubList(); });
   $("newClubBtn").addEventListener("click", () => { S.current = null; renderClubList(); renderClubForm(null); });
   $("accountBtn").addEventListener("click", () => renderAccount(false));
+  $("importBtn").addEventListener("click", () => {
+    S.current = null; renderClubList();
+    window.FFImport.start({
+      container: $("main"), db, friendly,
+      getClubs: () => S.clubs,
+      onDone: async () => { await loadClubs(); },
+      onClose: () => renderWelcome()
+    });
+  });
 
   function renderWelcome(){
     const pending = S.clubs.filter(c => c.status === "pending").length;
