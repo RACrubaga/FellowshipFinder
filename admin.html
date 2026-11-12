@@ -288,7 +288,7 @@
   }
   function renderClubList(){
     const q = S.q.toLowerCase();
-    const list = S.clubs.filter(c => (S.filter === "all" || c.status === S.filter) && (!q || c.name.toLowerCase().includes(q) || (c.area || "").toLowerCase().includes(q)));
+    const list = S.clubs.filter(c => (S.filter === "all" || c.status === S.filter) && (!q || c.name.toLowerCase().includes(q) || (c.area || "").toLowerCase().includes(q) || ("d" + (c.district || 9214)).includes(q)));
     const el = $("clubList");
     if (!S.clubs.length){
       el.innerHTML = '<p class="msg" style="color:var(--muted)">' + (S.isMod ? "No clubs yet. Register the first one." : "You don't manage any clubs yet. Register your club, or ask a moderator to add you to an existing one.") + '</p>';
@@ -359,7 +359,7 @@
       (c.status !== "pending" ? '<button class="btn ghost small" type="button" data-status="pending">Mark pending</button>' : "") + '</div>' : "";
     $("main").innerHTML =
       '<div class="ed-head"><div class="stack" style="gap:6px"><div class="row"><span class="pill ' + c.status + '">' + STATUS_LABEL[c.status] + '</span>' +
-      '<span class="label">' + (c.type === "rotary" ? "Rotary" : "Rotaract") + (c.ri_club_number ? " · Club No. " + c.ri_club_number : "") + '</span>' +
+      '<span class="label">' + (c.type === "rotary" ? "Rotary" : "Rotaract") + " · D" + (c.district || 9214) + (c.ri_club_number ? " · Club No. " + c.ri_club_number : "") + '</span>' +
       (c.is_sample ? '<span class="pill">Sample</span>' : "") + '</div><h2>' + esc(c.name) + '</h2></div>' + statusActions + '</div>' +
       (c.status === "pending" && !S.isMod ? '<p class="note warn" style="margin-top:12px">Waiting for the Rotaract Club of Rubaga team to approve this club. It won\'t appear on the public page until then.</p>' : "") +
       (c.status === "rejected" ? '<p class="note bad" style="margin-top:12px">This club was not approved and is hidden from the public page.</p>' : "") +
@@ -386,6 +386,7 @@
     c = c || {};
     return '<div class="grid2">' +
       '<label class="field"><span>Club name</span><input type="text" id="c-name" maxlength="120" value="' + esc(c.name) + '" placeholder="Rotaract Club of …"></label>' +
+      '<label class="field"><span>District</span><select id="c-district"><option value="9214"' + (+(c.district || 9214) === 9214 ? " selected" : "") + '>D9214</option><option value="9213"' + (+c.district === 9213 ? " selected" : "") + '>D9213</option></select></label>' +
       '<label class="field"><span>Type</span><select id="c-type"><option value="rotaract"' + (c.type === "rotaract" ? " selected" : "") + '>Rotaract</option><option value="rotary"' + (c.type === "rotary" ? " selected" : "") + '>Rotary</option></select></label>' +
       '<label class="field"><span>RI club number</span><input type="number" id="c-ri" min="1" value="' + esc(c.ri_club_number || "") + '"><small>From My Rotary. Helps stop duplicate or fake clubs.</small></label>' +
       '<label class="field"><span>Area</span><input type="text" id="c-area" maxlength="80" value="' + esc(c.area) + '" placeholder="e.g. Rubaga"></label>' +
@@ -400,7 +401,7 @@
   function readClubFields(){
     const ri = val("c-ri");
     return {
-      name: val("c-name"), type: $("c-type").value, ri_club_number: ri ? parseInt(ri, 10) : null,
+      name: val("c-name"), type: $("c-type").value, district: parseInt($("c-district").value, 10), ri_club_number: ri ? parseInt(ri, 10) : null,
       area: orNull(val("c-area")), city: val("c-city") || "Kampala", website: orNull(val("c-website")),
       contact_whatsapp: orNull(val("c-wa")), contact_email: orNull(val("c-email")),
       publish_contacts: $("c-publish").checked, is_active: $("c-active").checked

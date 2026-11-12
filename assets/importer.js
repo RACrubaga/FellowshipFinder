@@ -11,6 +11,7 @@
   const FIELDS = {
     name: ["club name", "club", "name"],
     type: ["club type", "type"],
+    district: ["district", "rotary district"],
     ri: ["ri club number", "ri number", "club number", "ri club no", "club no", "ri"],
     area: ["area", "club area"],
     city: ["city", "town", "city or town"],
@@ -103,8 +104,8 @@
     const hIdx = grid.findIndex(r => (r || []).some(c => ALIAS[norm(c)] === "name"));
     if (hIdx < 0) return {fatal: "Couldn't find a header row with a \"Club name\" column in the sheet \"" + sheetName + "\". Use the template, or make sure the first row has the column names."};
     const header = grid[hIdx].map(c => ALIAS[norm(c)] || null);
-    const missingCols = ["name", "type", "day", "time"].filter(k => !header.includes(k));
-    if (missingCols.length) return {fatal: "These columns are missing: " + missingCols.map(k => FIELDS[k][0]).join(", ") + ". Add them, or use the template."};
+    const missingCols = ["name", "type", "district", "day", "time"].filter(k => !header.includes(k));
+    if (missingCols.length) return {fatal: "These columns are missing: " + missingCols.map(k => FIELDS[k][0].replace(/^./, c => c.toUpperCase())).join(", ") + ". Add them, or download the latest template."};
 
     const rows = [], clubs = new Map();
     const exByRi = new Map(), exByName = new Map();
@@ -118,6 +119,8 @@
       const riRaw = str(get.ri).replace(/[^\d]/g, ""), ri = riRaw ? parseInt(riRaw, 10) : null;
       if (name.length < 3) errors.push("Club name is missing");
       if (!type) errors.push("Club type should be Rotaract or Rotary");
+      const dm = str(get.district).match(/921[34]/), district = dm ? +dm[0] : null;
+      if (!district) errors.push("District should be D9213 or D9214");
 
       // Club details
       let website = str(get.website); if (website && !/^https?:\/\//i.test(website)) website = "https://" + website.replace(/^\/+/, "");
@@ -126,7 +129,7 @@
       let email = str(get.email);
       if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ warnings.push("Club email not recognised, left out"); email = ""; }
       const club = {
-        name, type, ri_club_number: ri, area: str(get.area).slice(0, 80) || null, city: str(get.city).slice(0, 80) || null,
+        name, type, district, ri_club_number: ri, area: str(get.area).slice(0, 80) || null, city: str(get.city).slice(0, 80) || null,
         website: website || null, contact_whatsapp: whatsapp || null, contact_email: email || null,
         publish_contacts: /^y/i.test(str(get.publish))
       };
@@ -259,7 +262,7 @@
         else if (r.meetingNote){ status = (r.group.existing ? "Club updated. " : "Club added. ") + r.meetingNote; cls = "warn"; }
         else { status = r.group.existing ? (r.group.existing.is_sample ? "Updates a sample club" : "Updates existing club") : "New"; cls = "ok"; }
         const meet = r.meeting ? (esc(r.meeting.label) + ": " + patternText(r) + (r.meeting.venue_name ? " · " + esc(r.meeting.venue_name) : " · Online")) : (r.errors.length ? "" : esc(r.venue || ""));
-        return '<tr class="' + cls + '"><td class="n">' + r.rowNum + '</td><td>' + esc(r.name || "(no name)") + (r.club.type ? '<br><small>' + (r.club.type === "rotary" ? "Rotary" : "Rotaract") + (r.club.ri_club_number ? " · " + r.club.ri_club_number : "") + '</small>' : "") + '</td>' +
+        return '<tr class="' + cls + '"><td class="n">' + r.rowNum + '</td><td>' + esc(r.name || "(no name)") + (r.club.type ? '<br><small>' + (r.club.type === "rotary" ? "Rotary" : "Rotaract") + (r.club.district ? " · D" + r.club.district : "") + (r.club.ri_club_number ? " · " + r.club.ri_club_number : "") + '</small>' : "") + '</td>' +
           '<td>' + meet + '</td><td><span class="imp-status ' + cls + '">' + esc(status) + '</span>' +
           (r.warnings.length ? '<small class="imp-warn">' + r.warnings.map(esc).join("<br>") + '</small>' : "") + '</td></tr>';
       }).join("") +

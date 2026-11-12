@@ -102,6 +102,9 @@ legend{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:v
             <legend>The club</legend>
             <div class="grid2">
               <label class="field"><span>Club name <em>*</em></span><input type="text" name="Club name" id="r-club" maxlength="120" required placeholder="Rotaract Club of …"></label>
+              <label class="field"><span>District <em>*</em></span>
+                <select name="District" id="r-district" required><option value="">Choose a district</option><option value="D9214">D9214</option><option value="D9213">D9213</option></select>
+              </label>
               <label class="field"><span>Club type <em>*</em></span>
                 <select name="Club type" id="r-ctype" required><option value="Rotaract">Rotaract</option><option value="Rotary">Rotary</option></select>
               </label>
@@ -175,7 +178,7 @@ legend{font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; color:v
 
   $("reqForm").addEventListener("submit", e => {
     const f = e.target, msg = $("formMsg");
-    const need = [["r-club","the club name"],["r-when","when the club meets"],["r-time","the start time"],["r-venue","the venue"]];
+    const need = [["r-club","the club name"],["r-district","the district"],["r-when","when the club meets"],["r-time","the start time"],["r-venue","the venue"]];
     const missing = need.filter(([id]) => !$(id).value.trim()).map(([, label]) => label);
     if (missing.length){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "Please add " + missing.join(", ") + "."; $(need.find(([id]) => !$(id).value.trim())[0]).focus(); return; }
     if ($("r-map").value.trim() && !/^https?:\/\//i.test($("r-map").value.trim())){ e.preventDefault(); msg.className = "msg err"; msg.textContent = "The map link should start with https://"; $("r-map").focus(); return; }

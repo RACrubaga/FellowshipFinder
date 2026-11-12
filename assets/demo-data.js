@@ -8,7 +8,8 @@ window.FF_DEMO = {
    "area": "Ndeeba",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 9
+   "verified_days": 9,
+   "district": 9214
   },
   {
    "id": "demo-c2",
@@ -17,7 +18,8 @@ window.FF_DEMO = {
    "area": "Mengo",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 21
+   "verified_days": 21,
+   "district": 9214
   },
   {
    "id": "demo-c3",
@@ -26,7 +28,8 @@ window.FF_DEMO = {
    "area": "Makerere",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 14
+   "verified_days": 14,
+   "district": 9214
   },
   {
    "id": "demo-c4",
@@ -35,7 +38,8 @@ window.FF_DEMO = {
    "area": "Nakasero",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 30
+   "verified_days": 30,
+   "district": 9214
   },
   {
    "id": "demo-c5",
@@ -44,7 +48,8 @@ window.FF_DEMO = {
    "area": "Kololo",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 5
+   "verified_days": 5,
+   "district": 9213
   },
   {
    "id": "demo-c6",
@@ -53,7 +58,8 @@ window.FF_DEMO = {
    "area": "Kololo",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 40
+   "verified_days": 40,
+   "district": 9213
   },
   {
    "id": "demo-c7",
@@ -62,7 +68,8 @@ window.FF_DEMO = {
    "area": "Ntinda",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 12
+   "verified_days": 12,
+   "district": 9213
   },
   {
    "id": "demo-c8",
@@ -71,7 +78,8 @@ window.FF_DEMO = {
    "area": "Ntinda",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 118
+   "verified_days": 118,
+   "district": 9213
   },
   {
    "id": "demo-c9",
@@ -80,7 +88,8 @@ window.FF_DEMO = {
    "area": "Muyenga",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 18
+   "verified_days": 18,
+   "district": 9213
   },
   {
    "id": "demo-c10",
@@ -89,7 +98,8 @@ window.FF_DEMO = {
    "area": "Kansanga",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 7
+   "verified_days": 7,
+   "district": 9213
   },
   {
    "id": "demo-c11",
@@ -98,7 +108,8 @@ window.FF_DEMO = {
    "area": "Bugolobi",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 25
+   "verified_days": 25,
+   "district": 9213
   },
   {
    "id": "demo-c12",
@@ -107,7 +118,8 @@ window.FF_DEMO = {
    "area": "Wandegeya",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 3
+   "verified_days": 3,
+   "district": 9214
   },
   {
    "id": "demo-c13",
@@ -116,7 +128,8 @@ window.FF_DEMO = {
    "area": "Najjera",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 60
+   "verified_days": 60,
+   "district": 9213
   },
   {
    "id": "demo-c14",
@@ -125,7 +138,8 @@ window.FF_DEMO = {
    "area": "Nansana",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 33
+   "verified_days": 33,
+   "district": 9214
   },
   {
    "id": "demo-c15",
@@ -134,7 +148,8 @@ window.FF_DEMO = {
    "area": "Kira",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 11
+   "verified_days": 11,
+   "district": 9213
   },
   {
    "id": "demo-c16",
@@ -143,7 +158,8 @@ window.FF_DEMO = {
    "area": "Entebbe",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 20
+   "verified_days": 20,
+   "district": 9214
   },
   {
    "id": "demo-c17",
@@ -152,7 +168,8 @@ window.FF_DEMO = {
    "area": "Mukono",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 45
+   "verified_days": 45,
+   "district": 9213
   },
   {
    "id": "demo-c18",
@@ -161,7 +178,8 @@ window.FF_DEMO = {
    "area": "Rubaga",
    "city": "Kampala",
    "is_sample": true,
-   "verified_days": 15
+   "verified_days": 15,
+   "district": 9214
   }
  ],
  "meetings": [
