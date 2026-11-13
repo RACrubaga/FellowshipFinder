@@ -1,4 +1,4 @@
-// Fellowship Finder settings
+// Karibu settings
 // Paste the two values from Supabase: Project Settings > API (or "Connect").
 // The anon (public) key is meant to be public; the database's access rules protect the data.
 // NEVER put the service_role key here.

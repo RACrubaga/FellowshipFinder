@@ -53,7 +53,7 @@ button,select,input,textarea{font:inherit; color:inherit}
 a{color:var(--link)}
 
 .wrap{
-  max-width:1180px; margin:0 auto; display:flex; flex-direction:column; gap:20px;
+  max-width:1240px; margin:0 auto; display:flex; flex-direction:column; gap:20px;
   padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px));
   padding-block:20px 40px; box-sizing:content-box;
 }
@@ -139,6 +139,28 @@ input:focus,select:focus,textarea:focus{border-color:var(--link); outline:none}
 .guide-note p{flex:1 1 280px; margin:0; min-width:0; color:var(--muted); font-size:.92rem}
 .guide-note p strong{color:var(--fg)}
 .guide-ico{flex:none; width:28px; height:28px; fill:none; stroke:var(--accent); stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+
+/* Karibu top bar (public pages) */
+.k-ico{width:18px; height:18px; flex:none; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top, 0px); z-index:30; background:var(--surface)}
+.topbar{position:sticky; top:env(safe-area-inset-top, 0px); z-index:20; background:color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter:saturate(1.4) blur(12px); -webkit-backdrop-filter:saturate(1.4) blur(12px); border-bottom:1px solid color-mix(in srgb, var(--line) 70%, transparent)}
+.top-in{max-width:1240px; margin:0 auto; box-sizing:content-box; padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:10px; display:flex; align-items:center; justify-content:space-between; gap:12px}
+.brand{display:flex; align-items:center; gap:10px; text-decoration:none; color:var(--fg); min-width:0}
+.brand img{width:36px; height:36px; border-radius:11px; flex:none; box-shadow:0 4px 12px -4px rgba(210,33,99,.5)}
+.brand .wm{display:flex; flex-direction:column; line-height:1.05}
+.brand b{font-family:var(--font-display); font-size:1.32rem; font-weight:700; letter-spacing:-.02em}
+.brand b i{font-style:normal; color:var(--accent)}
+.brand small{font-size:.7rem; color:var(--muted); letter-spacing:.02em; font-weight:500}
+.nav{display:flex; align-items:center; gap:4px}
+.nav a.link{display:inline-flex; align-items:center; gap:6px; height:36px; padding:0 12px; border-radius:10px; color:var(--muted); text-decoration:none; font-size:.9rem; font-weight:500}
+.nav a.link:hover{background:var(--sunk); color:var(--fg)}
+.nav .btn{border-radius:10px}
+.nav .theme-btn{height:36px; border-radius:10px; border-color:transparent; background:transparent; color:var(--muted)}
+.nav .theme-btn:hover{background:var(--sunk)}
+.nav .theme-btn svg{stroke:currentColor}
+@media (max-width:820px){ .nav a.link{display:none} }
+@media (max-width:520px){ .nav .theme-btn span{display:none} .nav .theme-btn{padding:0 10px} .brand small{display:none} }
+
 
 /* Illustrations */
 .illo{display:block; width:100%; max-width:200px; height:auto; margin:0 auto}

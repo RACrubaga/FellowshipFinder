@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="description" content="How to use Fellowship Finder: find a fellowship near you, and keep your club's meetings up to date.">
-<title>Fellowship Finder Guide</title>
+<meta name="description" content="How to use Karibu: find a fellowship near you, and keep your club's meetings up to date.">
+<title>Karibu Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap">
@@ -19,29 +19,27 @@
 <meta name="theme-color" content="#D22163">
 <style>
 /* Layout: header; then a contents list (sticky on wide screens) beside the guide text. */
-header.top{display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:start; gap:6px 16px}
-header.top h1{font-size:clamp(1.6rem, 3.4vw, 2.4rem); font-weight:700; letter-spacing:-.02em; line-height:1.05}
-header.top h1 span{color:var(--accent)}
-header.top h1 small{font-size:.5em; font-weight:500; color:var(--muted); margin-left:8px; letter-spacing:0}
-.top-actions{display:flex; align-items:center; gap:8px; justify-self:end; flex-wrap:wrap; justify-content:flex-end}
-.tagline{grid-column:1 / -1; margin:0; color:var(--muted); max-width:62ch}
+.page-title{display:flex; flex-direction:column; gap:6px}
+.page-title .eyebrow{font-size:.74rem; letter-spacing:.1em; text-transform:uppercase; font-weight:700; color:var(--accent)}
+.page-title h1{font-size:clamp(1.8rem, 3.8vw, 2.6rem); font-weight:700; letter-spacing:-.03em; line-height:1.08}
+.page-title p{margin:0; color:var(--muted); max-width:62ch; font-size:1.02rem}
 @media (max-width:520px){ .top-actions .theme-btn span{display:none} .top-actions .theme-btn{padding:0 10px} }
 
 .doc{display:grid; grid-template-columns:minmax(0, 250px) minmax(0, 1fr); gap:28px; align-items:start}
 @media (max-width:860px){ .doc{grid-template-columns:minmax(0,1fr)} }
 .toc{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px}
-@media (min-width:861px){ .toc{position:sticky; top:calc(env(safe-area-inset-top, 0px) + 12px)} }
+@media (min-width:861px){ .toc{position:sticky; top:calc(env(safe-area-inset-top, 0px) + 80px)} }
 .toc ol{margin:8px 0 0; padding:0; list-style:none; display:flex; flex-direction:column; gap:2px}
 .toc a{display:block; padding:6px 8px; border-radius:6px; color:var(--fg); text-decoration:none; font-size:.92rem}
 .toc a:hover{background:var(--sunk)}
 .toc .sub a{padding-left:20px; color:var(--muted); font-size:.86rem}
 
 .content{display:flex; flex-direction:column; gap:22px; min-width:0}
-.sec{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px 24px; scroll-margin-top:16px}
+.sec{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:22px 24px; scroll-margin-top:84px}
 @media (max-width:520px){ .sec{padding:18px 16px} }
 .sec > h2{font-size:1.35rem; font-weight:700; margin-bottom:4px}
 .sec .who{display:inline-block; margin-bottom:12px}
-.sec h3{font-size:1.05rem; font-weight:700; margin:22px 0 6px; scroll-margin-top:16px}
+.sec h3{font-size:1.05rem; font-weight:700; margin:22px 0 6px; scroll-margin-top:84px}
 .sec p, .sec li{max-width:68ch; line-height:1.6}
 .sec p{margin:6px 0}
 .sec ol, .sec ul{margin:6px 0; padding-left:22px}
@@ -67,16 +65,22 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <h1>Fellowship <span>Finder</span><small>Guide</small></h1>
-    <div class="top-actions">
-      <a class="btn small" href="index.html">Find fellowships</a>
-      <a class="btn ghost small" href="admin.html">Login</a>
+<header class="topbar">
+  <div class="top-in">
+    <a class="brand" href="index.html" aria-label="Karibu, your fellowship finder">
+      <img src="assets/icons/icon.svg" alt="">
+      <span class="wm"><b>Karibu<i>.</i></b><small>Your Fellowship Finder</small></span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a class="link" href="index.html">Find fellowships</a>
+      <a class="link" href="request.html">Add your club</a>
       <button class="theme-btn" id="themeBtn" type="button"></button>
-    </div>
-    <p class="tagline">Everything you need to find a fellowship near you, and to keep your club's meetings up to date.</p>
-  </header>
+      <a class="btn small" href="admin.html">Login</a>
+    </nav>
+  </div>
+</header>
+<div class="wrap">
+  <header class="page-title"><span class="eyebrow">Guide</span><h1>How to use Karibu</h1><p>Karibu means "welcome". Here's how to find a fellowship near you, and how to get a missing club listed.</p></header>
 
   <div class="doc">
     <nav class="toc" aria-label="Contents">
@@ -99,7 +103,7 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
       <section class="sec" id="find">
         <h2>Finding a fellowship</h2>
         <span class="pill who">For everyone</span>
-        <p>Open Fellowship Finder and it shows Rotaract and Rotary clubs meeting <strong>today</strong> within <strong>5 km</strong> of you, soonest first. Each club shows its next meeting date, time and venue, with directions one tap away.</p>
+        <p>Open Karibu, your fellowship finder, and it shows Rotaract and Rotary clubs meeting <strong>today</strong> within <strong>5 km</strong> of you, soonest first. Each club shows its next meeting date, time and venue, with directions one tap away.</p>
 
         <h3 id="location">Sharing your location</h3>
         <ol>
@@ -155,7 +159,7 @@ code{font-family:var(--font-mono); font-size:.85em; background:var(--sunk); padd
       <section class="sec" id="missing">
         <h2>Is your club missing?</h2>
         <span class="pill who">Rotaract and Rotary clubs</span>
-        <p>Fellowship Finder is maintained by the <strong>Rotaract Club of Rubaga</strong>. If your club isn't listed, or its meeting details have changed, send them to us and we'll add or update it, usually within a week.</p>
+        <p>Karibu is maintained by the <strong>Rotaract Club of Rubaga</strong>. If your club isn't listed, or its meeting details have changed, send them to us and we'll add or update it, usually within a week.</p>
         <h3>Option 1: use the form</h3>
         <ol>
           <li>Open the <a href="request.html">Add your club</a> page.</li>

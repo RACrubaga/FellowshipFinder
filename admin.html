@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<title>Fellowship Finder Admin</title>
+<title>Karibu Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap">
@@ -256,7 +256,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px var(--accent-soft)}
 <body>
 <header class="topbar">
   <div class="top-in">
-    <a class="brand" href="admin.html"><img src="assets/icons/icon.svg" alt=""><b>Fellowship <span>Finder</span></b><em>Admin</em></a>
+    <a class="brand" href="admin.html"><img src="assets/icons/icon.svg" alt=""><b>Karibu<span>.</span></b><em>Admin</em></a>
     <div class="top-actions">
       <a class="icon-btn" href="index.html" title="Open the public page"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span class="lbl">Public page</span></a>
       <button class="theme-btn" id="themeBtn" type="button"></button>
@@ -277,7 +277,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px var(--accent-soft)}
   <section class="auth" id="loginView" hidden>
     <div class="auth-art" aria-hidden="true">
       <svg viewBox="0 0 120 120"><circle cx="60" cy="96" r="22" fill="#F2C35B" opacity=".35"/><ellipse cx="60" cy="98" rx="34" ry="9" fill="#F2C35B" opacity=".45"/><path d="M60 14c-17 0-29 12.5-29 28.5C31 63 60 94 60 94s29-31 29-51.5C89 26.5 77 14 60 14z" fill="#fff"/><circle cx="60" cy="43" r="11" fill="#C8346C"/><circle cx="60" cy="43" r="5" fill="#F2C35B"/></svg>
-      <span class="eyebrow" style="color:#fff; opacity:.8">Fellowship Finder</span>
+      <span class="eyebrow" style="color:#fff; opacity:.8">Karibu · Your Fellowship Finder</span>
       <h2>Keep every fellowship easy to find.</h2>
       <p>Update clubs, meeting times and venues, and let members know about changes the moment they happen.</p>
     </div>
@@ -534,7 +534,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px var(--accent-soft)}
         return '<div class="up-item"><span class="up-date"><small>' + F.WD_SHORT[d.getUTCDay()] + '</small><b>' + d.getUTCDate() + '</b></span><span class="t-txt"><span class="t-name">' + esc(w.c ? w.c.name : "") + '</span><span class="t-why">' + F.fmtTime(w.o.time) + (w.m.venue_name ? ' · ' + esc(w.m.venue_name) : ' · Online') + '</span></span></div>';
       }).join("") + '</div>' : '<p class="msg muted">No meetings in the next 7 days.</p>';
     $("main").innerHTML = '<div class="bare overview">' +
-      '<div class="page-head hello"><div><span class="eyebrow">' + F.fmtDayHtml(t0) + '</span><h2>' + greet + first + '</h2><p>Here\'s how Fellowship Finder looks today.</p></div></div>' +
+      '<div class="page-head hello"><div><span class="eyebrow">' + F.fmtDayHtml(t0) + '</span><h2>' + greet + first + '</h2><p>Here\'s how Karibu looks today.</p></div></div>' +
       '<div class="stats">' +
         stat("c1", "check", "Live clubs", live.length, live.filter(c => c.type === "rotaract").length + " Rotaract · " + live.filter(c => c.type === "rotary").length + " Rotary") +
         stat("c2", "clock", "Waiting for approval", pending.length, pending.length ? "Review them below" : "All caught up") +

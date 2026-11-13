@@ -1,7 +1,7 @@
 {
-  "name": "Fellowship Finder",
-  "short_name": "Fellowships",
-  "description": "Find Rotary and Rotaract fellowships near you, with the next date, time and venue.",
+  "name": "Karibu: Your Fellowship Finder",
+  "short_name": "Karibu",
+  "description": "Karibu, your fellowship finder. See which Rotaract and Rotary clubs meet near you, when, and where.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

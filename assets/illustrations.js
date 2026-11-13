@@ -1,4 +1,4 @@
-/* Fellowship Finder: small theme-aware illustrations (inline SVG, colours come from CSS tokens). */
+/* Karibu: small theme-aware illustrations (inline SVG, colours come from CSS tokens). */
 window.FF_ILLO = {
   // Empty meeting table: shown when no club meets at the chosen time and distance
   empty:

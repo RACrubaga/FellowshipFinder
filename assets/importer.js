@@ -1,9 +1,9 @@
-/* Fellowship Finder: "Import from Excel" for site admins.
+/* Karibu: "Import from Excel" for site admins.
    Reads the import template (or a similar sheet), shows a checked preview, then saves clubs and meetings. */
 (function(){
   "use strict";
   const F = window.FF, esc = F.esc;
-  const TEMPLATE_URL = "assets/templates/fellowship-finder-import-template.xlsx";
+  const TEMPLATE_URL = "assets/templates/karibu-import-template.xlsx";
   const LIB_URL = "assets/vendor/xlsx.full.min.js";
   const DAY = F.DAY;
 

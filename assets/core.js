@@ -1,4 +1,4 @@
-/* Fellowship Finder: shared helpers for the public page and the admin area.
+/* Karibu: shared helpers for the public page and the admin area.
    Calendar maths runs in Kampala time (UTC+3, no daylight saving). */
 (function(){
   "use strict";
